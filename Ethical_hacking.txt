@@ -1,0 +1,200 @@
+EXPLOITING NETWORK-BASED VULNERABILITIES
+
+1. Windows Name Resolution and SMB Attacks
+- There are several name-to-IP address resolution technologies and protocols including 
+-> NetBIOS (Network Basic Input Output System)
+-> LLMNR (Link-Local Multicast Name Resolution)
+-> Domain Name System (DNS) 
+
+NetBIOS & LLMR
+- Are protocols that are used primarily by Windows for host indentification
+- LLMNR which is based on the DNS protocol format, allows host on the same local link to perform name resolution for other hosts
+- Eg, a windows host trying to communicate to a pointer or to a network shared folder may use NetBIOS
+
+NetBIOS provides 3 serevices
+- NetBIOS for name registration & registration
+- Datagram Service (NetBIOS-DGM) for connectionless communication
+- Session SErvice (NetBIOS-SSN) for connection-oriented communication
+
+NetBIOS-related operations use the following ports & protocols
+- TCP port 135: MS-RPC (Microsoft Remote Procedure Call, endpoint mapper, used for client-to-clinet & server-to-client communication
+- UDP port 137: NetBIOS-NS
+- UDP [ort 138: NetBIOS-DGM
+- TCP port 139: NetBIOS-SSN
+- TCP port 445: SMB protocol, used for sharing files btn os including windows & unix-based systems
+
+NOTE: NetBIOS name was a 16-character name assigned to a computer in a workgroup by WINS for name resolution of an IP address to a NetBIOS name but now Microsoft uses DNS for name resolution
+
+- In Windows, a workgroup is a LAN peer-to-peer network that can support a max of 10 hosts in the same subnet & has no centralized administration & each user controls the resource & security locally on their system
+- A domain-based implementation, is a client-server network that can support 1000+ hosts that are geographically dispersed across many subnets & a user with an account on the domain can log on to any computer system without having an account on that computer by authenticating to a domain controller
+
+VULNERABILITIES IN NetBIOS, LLMNR & SMB
+1 - NetBIOS : easy for an attacker to enumerate the machines & potentially compromise the system by brute-forcing passwords or other means
+2 - LLMR : Accker spoofing an authoritative source for name resolution on a victim system by responding to LLMNR traffic over UDP port 5355 & NBT-NS trafiic over UDP port 137. Attacker poisons the LLMNR service to manipulate the victim's system, the username, & NTLMv2 hash by using tools like sniffers & crack the hash after
+- Several can used including NBNSpoof, Metasploit, Responder, Pupy on github for remote admin & post exploitation working on windows Windows, Linux, MacOS & Android
+3 - SMB exploits
+- >root@kali:~# searchsploit smb
+- >root@kali:~# msfconsole
+- msf> use exploit/windows/smb/ms17_o10_eternalblue
+- msf> use exploit/windows/smb/ms17_o10_eternalblue) > show options
+
+NOTE: You can scan for SMB vuln using enum4linux
+
+DNS CACHE POISONING
+- involves the manipulation of the DNS resolver cache through the injection of corrupted DNS data & is done to force the DNS server to send the wrong IP address to the victim & redirect to the attacker's sys
+
+SNMP Exploits
+- >root@kali: /usr/share/nmap/scripts#ls -1 snmp*
+- >root@kali:/usr/share/nmap/scripts# nmap --script smtp-open-relay.nse
+10.1.2.14
+
+Useful SMTP Commands
+
+Several SMTP commands can be useful for performing a security evaluation of an email server. The following are a few examples:
+
+HELO: Used to initiate an SMTP conversation with an email server. The command is followed by an IP address or a domain name (for example, HELO 10.1.2.14 ).
+EHLO: Used to initiate a conversation with an Extended SMTP (ESMTP) server. This command is used in the same way as the HELO command.
+STARTTLS: Used to start a Transport Layer Security (TLS) connection to an email server.
+RCPT: Used to denote the email address of the recipient.
+DATA: Used to initiate the transfer of the contents of an email message.
+RSET: Used to reset (cancel) an email transaction.
+MAIL: Used to denote the email address of the sender.
+QUIT: Used to close a connection.
+HELP: Used to display a help menu (if available).
+AUTH: Used to authenticate a client to the server.
+VRFY: Used to verify whether a user’s email mailbox exists.
+EXPN: Used to request, or expand, a mailing list on the remote server.
+
+omar@kali:~$ telnet ip_address port
+
+Using the smtp-user-enum Tool
+- >root@kali:~# smtp-user-enum
+
+Enumerating a User by Using the smtp-user-enum Tool
+- >root@kali:~# smtp-user-enum -M VRFY -u omar -t ip_address
+
+Using searchsploit to Find Known SMTP Exploits
+- >root@kali:~# searchsploit smtp
+
+FTP Exploits
+- >root@kali:~# nmap -sV ip_address
+
+FTP Anonymous Login Verification Using Metasploit
+- >msf > use auxiliary/scanner/ftp/anonymous
+
+Press-the-Hash Attacks
+- All windows versions store passwords in the Security Accounts Manager (SAM) file
+- OS does not what the actual password is coz it stores only a hash of the psd
+- Ms has a suite of security protocols for authentication called NTLM (New Technology LAN Manager) in versions NTLMv1 & NTLMv2
+- Ms uses Kerberos in domains now however NTLM may still be used when the client is authenticating to a server via IP address or if a client is authenticating to a server in different Active Directory (AD) forest configured for NTLM
+
+KERBEROS
+- Auth protocol defined in RFC 4120 that has been used by windows for a number of years & also defined by numerous applications & other os. (https://www.kerberos.org)
+- Contains 3 basic elements, client, server & key distribution center (KDC) including the auth server & ticket-granting server
+
+Steps in Kerberos Authentication
+- Step 1. The client sends a request to the authentication server within the KDC.
+- Step 2. The authentication server sends a session key and a ticket-granting ticket (TGT) that is used to verify the client’s identity.
+- Step 3. The client sends the TGT to the ticket-granting server.
+- Step 4. The ticket-granting server generates and sends a ticket to the client.
+- Step 5. The client presents the ticket to the server.
+- Step 6. The server grants access to the client.
+
+LDAP (Lightweight Directory Access Protocol)
+- Active Directory uses Lightweight Directory Access Protocol (LDAP) as an access protocol. 
+- The Windows LDAP implementation supports Kerberos authentication. 
+- LDAP uses an inverted-tree hierarchical structure called the Directory Information Tree (DIT). In LDAP, every entry has a defined position. 
+- The Distinguished Name (DN) represents the full path of the entry.
+
+NOTE:
+- One of the most common attacks is the Kerberos golden ticket attack. An attacker can manipulate Kerberos tickets based on available hashes by compromising a vulnerable system and obtaining the local user credentials and password hashes. If the system is connected to a domain, the attacker can identify a Kerberos TGT (KRBTGT) password hash to get the golden ticket.
+
+- Empire is a popular tool that can be used to perform golden ticket and many other types of attacks (https://github.com/BC-SECURITY/Empire)
+- (Empire) > use module powershell/credentials/mimikatz/golden_ticket
+
+
+- Another weakness in Kerberos implementations is the use of unconstrained Kerberos delegation. Kerberos delegation is a feature that allows an application to reuse the end-user credentials to access resources hosted on a different server. Typically you should allow Kerberos delegation only if the application server is ultimately trusted; however, allowing it could have negative security consequences if abused, and Kerberos delegation is therefore not enabled by default in Active Directory.
+
+KERBEROASTING
+- Kerberoasting is a post-exploitation activity that is used by an attacker to extract service account credential hashes from Active Directory for offline cracking. It is a pervasive attack that exploits a combination of weak encryption implementations and improper password practices. Kerberoasting can be an effective attack because the threat actor can extract service account credential hashes without sending any IP packets to the victim and without having domain admin credentials.
+
+ON-PATH ATTACKS (MITM)
+- an attacker places himself or herself in-line between two devices or individuals that are communicating in order to eavesdrop (that is, steal sensitive data) or manipulate the data being transferred (such as by performing data corruption or data modification). On-path attacks can happen at Layer 2 or Layer
+
+ARP Spoofing and ARP Cache Poisoning, Media Access Control (MAC) spoofing
+- examples of an attack that leads to an on-path attack scenario
+
+NOTE:
+- An attacker can carry out an on-path attack at Layer 3 by placing a rogue router on the network and then tricking the other routers into believing that this new router has a better path than other routers. It is also possible to perform an on-path attack by compromising the victim’s system and installing malware that can intercept the packets sent by the victim. The malware can capture packets before they are encrypted if the victim is using SSL/TLS/HTTPS or any other mechanism. An attack tool called SSLStrip uses on-path functionality to transparently look at HTTPS traffic, hijack it, and return non-encrypted HTTP links to the user in response. This tool was created by a security researcher called Moxie Marlinspike. You can download the tool from https://github.com/moxie0/sslstrip.
+
+Downgrade Attacks
+
+In a downgrade attack, an attacker forces a system to favor a weak encryption protocol or hashing algorithm that may be susceptible to other vulnerabilities. An example of a downgrade vulnerability and attack is the Padding Oracle on Downgraded Legacy Encryption (POODLE) vulnerability in OpenSSL, which allowed the attacker to negotiate the use of a lower version of TLS between the client and server. You can find more information about the POODLE vulnerability at https://www.cisa.gov/news-events/alerts/2014/10/17/ssl-30-protocol-vulnerability-and-poodle-attack.
+
+
+ETTERCAP FOR ARP CACHE POISONING & ARP SPOOFING
+
+- (kali@kali)-[~] ssh -l labuser 10.6.6.23
+- >labuser@3fb0515ea2f7:/$ ip neighbor
+
+- (kali)> sudo ettercap -T -q -i br-internal --write mitm-saved.pcap --mitm arp /10.6.6.23// /10.6.6.v13//
+
+
+Route Manipulation Attacks
+- Although many different route manipulation attacks exist, one of the most common is the BGP(Broader Gateway Protocol) hijacking attack
+- An attacker can launch a BGP hijacking attack by configuring or compromising an edge router to announce prefixes that have not been assigned to his or her organization
+- If the malicious announcement contains a route that is more specific than the legitimate advertisement or that presents a shorter path, the victim’s traffic could be redirected to the attacker
+
+DoS and DDoS Attacks
+- Denial-of-service (DoS) and distributed DoS (DDoS) attacks have been around for quite some time, but there has been heightened awareness of them over the past few years. DoS attacks can generally be divided into three categories, described in the following sections:
+- Direct
+- Botnet
+- Reflected
+- Amplification
+
+Network Access Control (NAC) Bypass
+- NAC is a technology that is designed to interrogate endpoints before joining a wired or wireless network. It is typically used in conjunction with 802.1X for identity management and enforcement
+
+VLAN Hopping
+DHCP Starvation Attacks and Rogue DHCP Servers
+- In a DHCP starvation attack, an attacker broadcasts a large number of DHCP REQUEST messages with spoofed source MAC addresses
+- Setting Up a Rogue DHCP Server in Yersenia
+
+
+Exploiting Wireless Vulnerabilities
+1. Disassociation (or Deauthentication) Attacks
+Starting Airmon-ng
+- (kali@kali)>airmon-ng start wlan1
+
+Using the Airodump-ng Tool
+- (kali@kali)>airodump-ng wlan1mon
+
+Performing a Deauthentication Attack with Aireplay-ng
+- (kali@kali)>aireplay-ng -0 0 -a mac wlano
+
+NOTE Many wireless adapters do not allow you to inject packets into a wireless network. For a list of wireless adapters and their specifications that can help you build your wireless lab, see https://theartofhacking.org/github.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

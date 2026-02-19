@@ -1,0 +1,702 @@
+NETWORK THREATS
+
+1. External threats
+- Social Enginerring
+- Denial of service attacks 
+	SYN flood: here the attacker uses the TCP three-way handshake where they send a syn signal to a router or firewall and never send back SYN ACK message hence taking up the resources
+	SMURF attack: The attacks spoofs an IP address and they ping a request in a broadcast domain where the hosts can reply in an echo format to the spoofed IP address
+	DDOS attacks: The attack uses a botnet via Internet Relay Chart (IRC) to get control of a given network where they can do anything to the network.
+- Man-in-the-middle (MITM) attack
+- Session hijacking: Here attacks gain access to session IDs of the user using any possible means and after getting it, they pretend they are the real users.
+- Brutenforce attack: An example is the Wireless Equivalency Protocol where attackers can do brute force
+
+2. Internal threats: Are the most dangerous attacks because the attackers works within the org and know the all arch of the network
+- These threats are successful due to:
+	- Improper patching
+	- Default configurations and default passwords
+	- Vendor best practices not followed
+	- Insecure programming practices
+	- Lax administration procedures
+
+3. Application Security attack: Attacks through applications
+
+NETWORK SECURITY OBJECTIVES
+- Confidentislity for data at rest or in motion, attacks include MITM, packet capture, port mapping
+- Integrity where data should reach its destination unchanged, attacks include Malicious code/data diddling, keyloggers, proxy
+- Availabilty where you lose access to the data, attacks include DDOS, SYN flod, Smurf 
+
+DATA CLASSIFICATION
+- Its very important to classify data so as to assign proper controls to the data 
+- The following are the tenets sourrounding data;
+	- All data is not
+	- Some data might be embrassing or damaging if made public
+	- Some compliance measures require classification
+	- You shd focus your efforts on protecting the most critical data instead of trying to protect all the data equally
+
+A.Military Data classifications
+1. Unclassified: Not sensitive and has no CIA
+2. Sensitive but unclassified (SBU): May provide some embarrassment if evealed but no major secuirty restrictions
+3. Confidential: Data with least-restrictive protection within the classification realm and must have confidentiality protection.
+4. Secret: Must be secured at significant cost and effort and shd be more restrive than confidentail but not more than Top secret
+5. Top secrete: Must be secured with most cost and effort and its only known to those cleared to know it.
+
+B. Private Sector Data Classification
+1. Public: Data in public domain eg white papers, stock info, marketing info and no protection is required
+2. Sensitive: Very similar to sensitive but unclassified (SBU) in the military model
+3. Private: Data important to the org and is protected accordingly
+4. Confidential
+
+NOTE: 
+Qualitiness of data for protecion;
+- Value (data worthness)
+- Age
+- Usefulness
+- Personal data (has to be classified)
+
+Steps to classify data
+1- Identify the custodian of the data
+2- DEtermine how the data is classified and labeled
+3- Identify the data owner and classify accordingly
+4- Identify any exceptions
+5- Identify specifoc controls to be used with each classification, if necessary
+6- Define the rules for declassifying data and disposal, if necessary
+7- Create a security awarenes program that addresses information classification
+
+
+SECURITY CONTROLS
+- Measures applied to manage and reduce risk to data
+- They are generally grouped under administrative, technical and physical
+
+A. SECURITY CONTROLS BY TYPE
+1. Administrative controls: typically associated with policies and procedures. They form the management layer of control structure
+- Security policies and procedures
+- Awareness training
+- Audits
+- Change control procedures
+- Background checks of employees
+- Prudent hiring practices
+- Job rotation
+- Separation of duties
+
+2. Technical controls: Usually hardware and software based 
+- Firewalls
+- IPS(Intrusion Prevention Systems)
+- Router Access Control Lists
+- VPN devices
+- Identity Management Systems such as Terminal Access Control Access - Control System Plus (TACACS+) and Remote Authentication Dial In User Service(RADIUS)
+- Network Admission Control Systems
+- Tokens and Smartcards
+
+3. Pysical Controls: Typically mechanical in nature.
+- Locks
+- Uninterruptible Power Supplies
+- Diesel generators
+- Security guards
+- Motion Sensors
+- Alarm Systems
+- Safes
+- Fire Suppression Systems
+
+NOTE:
+- All the above three security controls are effective if they are used at the same time and uneffective if one or two are used.
+- It must be said that even though there is a need for physical controls, human safety must come above all else doors and locks must have safegurds to allow exit in the case of an emergence.
+- Application attacks make up approximately 75% of all netqork attacks today.
+
+B. SECURITY CONTROLS BY PURPOSE
+- Preventative control eg IPS
+- Deterrent Control eg camera, security guard
+- Detective Control eg camera, IDS
+
+
+
+INCIDENT RESPONSE
+- It has 6 steps which can be remebered from PICERL
+
+P - Preparation 
+	-steps required to get a team of people ready to handle incidents, and through this, elements come together
+	- A firm policy and procedures must in place for what will happen when an incident occurs as it will and here the legal team should be involved as law enforcement works handy with incidents
+	- As for Human factors, You should remain calm and think everything through for about 15 to 30 mins while taking notes of everything happening and engaging the administrators
+	- Establish a command post or war room from which ti work
+	- Establish a communications plan
+	- Establish training and test runs
+	- Coordinate with support desks and sytem administrators
+	- Have emergency passwords and crypto keys available
+	- Have a bag available with tools, drives, cables, USB keys, extra batteries and so on
+	- Have bootable media available with security tools and a laptop (or two)
+	- Have available cell phones and emrgency call lists
+
+I - Identification
+	- If there is an incident like a logon 100X into the system, identify if its serious or not and then contact the superior responsible for declaring if there is a bleach into the system so that action be taken by entire team.
+	- If the incident happens, check thorough using the preparation to make sure that everythong upon the incident is viable for response.
+
+C - Containment
+	- At this level one can remove the devices involved in the incident safely off the network but if one wants to do forensics, alot of factors and question can be considered like how much will the incident cause if it goes on as 
+	as we observe the intruder, how will we stop the intrusion incase it stays for a long time.
+	- Always a backup of the drive should be done and the copy used in the production while the original used for forensic references for the incident.
+
+E - Eradication
+	- After the above levels are done, an incident needs to be stopped for the devices to run again and backup for the good data is done as backup is always needed incase there is a bleach.
+	- So you shd do vulnerability scanning for any malware into the system b4 backup for the good data.
+
+R - Restoration
+	- It is simply put, getting the system back online and into production.
+	- Restore the system
+	- Validate the system
+	- Put the system back into production 
+	- Monitor the system
+
+L - Lession Learned
+	- Taking lessons learned can be applied in improving the system after eradicating and restoring the system.
+	- Includes a formal meeting where a report about the incident is presented explaing what happened, what was done, and how the situation can be improved to prevent a future occurence.
+
+
+
+
+LAW AND ETHICS
+- Legal Matters are a driving factor behind policies at most organizations and it relevant that a person dealing with info security shd know of these laws.
+- Forensic experts need to be more conversant with rules of evidence, chain of custody, and other topics.
+- The types of laws include the following
+
+1. CRIMINAK LAW
+- Involves trnasgressions of jurisdiction's criminal code ie laws against theft, murder, illegal drugs and other antisocial behavior.
+- Here prosecutors need to establish 3 things to prove criminal case in court;
+a. Means: Were they capable of committing the crime?
+b. Motivation: Was there a reason the culprit committed the crime?
+c. Opportunity: Were they able to commit the crime?
+
+NB: You might ask why this is important. It ties directly into network security coz evidence like physical hard drives, firewall logs and intrusion detection messages must be kept 
+and a chain of custody of the evidence must be established
+
+2. Civil law(tort law)
+- This deals with a perceived wrongdoing that is not necessarily criminal and covers matters like personal injuries, medical malpractice, slander and business dealings.
+- Its usually about receiving money although sometimes the court may require that an action be taken (or undone, in some cases)
+- Prison is not n option in civil law.
+
+3. Administrative law
+- Usually involve the regulations and actions of government agencies eg if a company was found to be negligent in paying its employees, a state or federal agency cd force the c
+ompany to correct the issue monetarily & cd also levy an adminstrative fine as a punitive step.
+
+4. Intellectul Property
+- This is the largest assest of many companies and there4 it mus treated as confidential info and protected accordingly and may take one or all of the following;
+a. Trademarks: word, name or symbol that is used in trade & indicates where goods come from & distinguishes one firm's prdts 4m others.
+b. Patents: Grants property rights to an invention of an org for a period of 20 yrs from date the appliance was filed in USA & grants permission of prohibiting others to use your invention
+c. Trade secrets: An IP that is not a public domain eg formula for making Coca-Cola
+d. Copyrights: Protects original work like music, literature, drame and artistic works whether published or not. Here owners can control reprodctn, distribution & public performance or display.
+
+
+ETHICS (morals considered to be higher than the law)
+- Refers to a set of standards and principles that are deemed to be higher than the law.
+- They involve morals and standards thatg are considered to be proper behavior in a given situation.
+- Certain industry groups and professions usually have a code of ethics they expect their memebers or cinstituents to abide by.
+- Within info security, there are a number of ethics codes developed by industry orgtns and include;
+
+1. Internal Info security sytems security certification consortium (ISO) pow 2 code of ethics
+2. Global Info Assurance Certification (GIAC) code of ethics
+3. Info systems security association (ISSA) code of ethics
+4. Info systems audit and control assocaition (ISACA) code of Professional ethics
+5. Internet Architecture Board (IAB)
+6. Generally Accepted System Security Principles (GAASP)
+
+7. Computer Ethics Institute
+
+
+
+CREATING THE SECURE NETWORK
+
+Creating a Security Policy
+- Its important that an org takes the time to develop a comprehensive security policy.
+- This policy must be enforced from the top levels of the company down and allow you to take the steps necessary to secure your company's information assests.
+
+GOALS OF A SECURITY POLICY
+The security policy sets out to define the following;
+- Critical info assests of a company
+- How they must be secured
+- Appropriate use of the data and resources
+
+> The policy can be used to establish rules, set consequences for violations, suggest expected email etiquette and behavior and so on.
+> Its a living document coz you will want to change or refine certain policies as ur company's security posture matures as well as add new items as technology 
+changes eg an antivirus policy that hasn't been touched for five years probably does't address the virus concerns to today.
+
+> A security policy is series of deocuments that target specific audiences (all-encompassing security direction or posture of the company as a whole)
+> SP shd have 3 components ie governing policy, technical and end-user polices
+
+1. Governing policy
+> A high-level document aimed primarily at managers & technical personnel and covers security items that are important to entire org.
+> It covers the following topics
+1. Identification of the issue
+2. The organization's position on the issue
+3. How the policy fitd into the org
+4. Roles & responsibilities of various members of the org
+5. Level of compliance needed (ie what legal compliance measures apply to your org)
+6. What actions are required & the consequences for noncompliance
+
+2. Technical policies
+> Provide guidence for the IT staff, particularly security personnel.
+> A backup policy is a good eg and the person responsible for backups wd use it to govern how backups are performed, stored and so on.
+
+3. End-user policies
+> Policies for end user and cover company rules & guidelines eg use of corporate email or internet.
+> An email policy might contain such topics as whether it is acceptable to receive personal email at the ofice & not opening attachments from unkown persons
+> One policy is the Acceptable Use Policy(AUP) thats with most apps on the internet and lays out the dos & donts
+> AUP is a guiding doc bt it can have security ramfications in that it might address issues about employyees' use of the internet & also how people 4m 
+outside the company might use a company website
+
+POLICIES AND PROCEDURES
+> A policy governs what shd be done eg specifying the need for a firewwall to protect an org from network attacks
+> Procedure is a step-step process describing how to actually perform a task eg configuring a specific firewall rule
+> Procedures are sometimes identified by different names in different orgs but the end result is the same
+> Policies by themselves are only high-level guidance and they do not tel you how to do something specifically
+
+Other Documents
+> There are other detailed documents that are used in an org for security related taks.
+1. Standards: Docs used to create consistency across the org ob how things are done eg there might be a router standard that specifies a hardening build. 
+There also might be standards for server builds
+2. Guidelines: Documents that suggest rather than require eg an end-user computing security guide might explain how to disable peer-to-peer file sharing
+
+Managing Risk
+> The first priority when thinking about risk management shd be to determine which data is worth protecting.
+> The next step is to identify the systems on which the data is located
+> Once you have identified those key pieces, you can begin to evaluate the threat against the systems & the data.
+> This process is called THREAT IDENTIFIACTION or THREAT MODELING
+> RISK analysis is then performed to determine the probabilty of a threat & what wd happen if a threat were successful
+
+THREAT IDENTIFICATION
+- Suppose you maintain the e-commerce site of a retail company that does $500 m worth of business a yr, 50% of it over the web.
+- What kinds of threats do you face for this applications?
+- Building a list such as following is the 1st step in threat identification.
+- It describes some of the threats an e-commerce applications might face
+> Denial of service attack which interrupts the revenue stream
+> A system compromise that results in one or more of the following:
+- Stolen credit card or banking data
+- Loss of customer data
+- Web defacement
+- Deletion of transactional data
+
+> Fraudulent transactions
+> Public embarrasment & loss of trust
+
+RISK ANALYSIS
+> Once you have identified the threats, you need to do a risk analysis to determine the likelihood of the event occuring, where risk is and 
+what the ramifications could be.
+> You should various tools to analyze the different threat that are identified like Denial of service, system compromise, fradulent transactions, 
+public embrassment and trust and others.
+
+QUANTITATIVE RISK ANALYSIS
+> This is the mathematical representation to determine assets, loss expectancy and other values.
+> the values used are: Assest value(AV)-->Value of an asset, Exposure factor(EF)-->% of loss of an asset that wd be realized if a risk occurs,
+Single loss expectancy(SLE)-->cost each time a risk event occurs and usually calculated for each threat, Annualized rate of occurrence(ARO)-->
+estimated frequency of a risk event occuring eg how mang times per year your website sustains a DOS, Annualized loss expectancy(ALE)-->expected 
+amount of loss attribute to a single threat in a single year.
+
+formulas are;
+- SLE is the monetary cost each time a threat occurs for a given risk. SLE represents the asset value (AV) multiplied by the exposure factor (EF) 
+or expressed as AV * EF = SLE
+- ALE is loss expectancy from a single threat in a given year. Its expressed as ALE = SLE * ARO. this can be used to justify the cost of security 
+measures or controls applied to deter this threat.
+
+RISK MANAGEMENT AND AVOIDANCE (addition to risk analysis) and Risk transference
+> Risk management is the process of determining risks and minimizing the negative consequences.
+> Risk avoidance is the process of minimizing the exposure to a risk which wd be one form of managing it.
+> Risk transference involves transfering a risk to someone else incase you dont want to manage it yourself.
+
+SECURE NETWORK DESIGN (SND)
+> SND is important to security policies and risk management and can be affected by many things ie
+
+1. Business requirements: which dnt alwys include security cincerns when they introduce new systems but you must find a way to keep a business 
+running while still addressing security and its the most important area of SDN
+
+2. Security policy: Risk from an insecure network needs to be analyzed to determine a cost shd the risk be realized. You can then make an informed 
+decision about how much you wd be willing to spend to reduce that risk.
+
+3. Operations security best practices: Can help guide the design with solns that have been deployed & proven elsewhere.
+
+NB:
+> It is important to have a good set of assumptons going in and its sometimes necessary to THINK like a HACKER and look at your network from that perspective.
+> These are some things you may cnsider as thinking like a hacker
+1. Attack vectors: what are all of the ways that you can get ur network? You shd include every possible path
+2. Plan for the future: Wat security measures are going to be avalible in a year, 3, 5 yrs down the road and their impact.
+3. Plan for failure: Look for single points of failure & plan accordingly.
+
+> Keep your design simple coz the more complex it is, the greter the possibility that you will misconfigure something.
+> An entry point will be overlooked, a single point of failure will be missed and something will be bypassed coz of complex design.
+> Adhere to principles of least privileges wen doing SND eg person, software app, or item of hardware has the lowest privileges necessary to perform their required functions.
+
+
+- Suppose you have an e-commerce web server that is physically in the demilitarize zone (DMZ) of your network
+
+
+			Internet
+				|   \
+				|     \	
+				|       \ inbound only
+			----------------- \>
+			|		|__________________webiste
+			-----------------   />
+				|	  /
+			inside	|
+				|	/ inbound only
+				db    /	
+
+
+> The web server needs to talk to a bd sitting behind the DMZ n the inside of the networm.
+> How wd you design this from a firewall perspective? 
+>Following the principles of least privileges, you wd allow only traffic the internet into the web server
+> From the web server into the DMZ, you wd allow only traffic to the db on the inside.
+> There wd be ni traffic allowed from the db out to the DMZ
+> There4 only traffic that is absolutely necessary to perform the function is allowed.
+
+CREATING SECURITY AWARENESS
+> There are 3 components of security awareness which include Awareness, Training, and Education
+
+1. Awareness:  
+>Mantaining awareness is a combination of informing users about security policies and systems, keeping the user 
+informed about the current threats and reinforcing good security habits.
+> Tools for improving security awareness can include security posters, login banners, computer-based training, vidoes and newletters.
+> The key elements of an active user awareness training program are as follows;
+- Motivation of management and employees
+- Administratin of the program
+- Maintenance of the program
+- Evaluation of the program
+- Identification of proper instructors
+- Identification of the scope and objectives
+- Identification of the groups to receive the training
+
+2. Training:
+>Serves the prupose of providing current information and developing the skills of IT eployees who are not necessarily directly involved in administratering the network security.
+> Target audiences for this kind of training are members of management, audit staff, developers, sytem administrators, and the like.
+> Training typically focuses on teaching skills and the primary difference btn training and awarenes is that awareness focuses on drawing attention to a specific topic rather than pushing a specific skill.
+
+3. Education
+> Its the composite of a number of mulitidisciplinary skills that are taken as an overall program that lends itself toward the creation of a well-rounded security professional.
+> Usually conducted at a college or university with a degree inferred at the conclusion.
+
+MAINTAINING OPERATIONAL SECURITY
+> Operational security is defined as the security measures employed to protect systems (hardware), software and media that contains data.
+> This commonly involves the actions of security personnel after systems and software have been installed.
+> And its their job to monitor and secure those systems and software, from internal & external threats as well as operational threats in the env.
+> On of the ways that this can be done is by employing measures that control the way systems are developed and software is written.
+> One such measure is called the Systems Development Life Cycle (SDLC)
+> Operations security refers to measures taken t secure info that wd compromise operations if discovered by the enemy.
+
+DEFINING THE SDLC (Systems/Software Development Life Cycle)
+> SDLC can be Systems/Software Development Life Cycle depending on who you talk to.
+> SDLC is methodology in which to build & deploy info systems.
+> It can also be used for writing software and there are also a number of other methodologies that can be used aprt from SDLC
+> SDLC process is as follows;
+
+	SDLC PROCESS
+
+INITIATION			ACQUISITION &			IMPLEMENTATION		OPERATIONS			DEPOSITION
+. Select a security 		DEVELOPMENT			. Insepction & 		MAINTENANCE			. Save critical information
+category (high, medium,		. Perform a formal		Sign off		. Configuration			. Clean media
+low)				risk assessment			. System 		management			. Dispose of hardware/
+			------->. Perform functional -------->	Integration------------>. Monitoring ----------------->	software
+. Perform a preliminary 	requirements analysis		. Controls 
+risk assessment			. Perform security 		verification &
+				assurance requirements		certification
+				analysis			. Accredition,
+				. Cost cnsider-actions 		if necessary
+				& reporting
+				. Security control test
+				development
+				. Security controls test
+				and evaluation
+
+
+1. Initiation: 
+> Generally thought of as capturing 2 items ie security categorization & risk assessment.
+> SEcurity categorization occurs wen the secui=rity of the system is assigned to one of several categories (high, medium or low)
+> The categories represent how severely a breach of security for a given system wd affect the org.
+> Categorization helps determine the appropriate security controls to be used.
+> A preliminary risk assessment is what some might call a 'ballpark' view of things.
+> It is a very high-level assessment of the secuirty requirements and a more detailed formal risk assessment occurs later in the process.
+
+2. Acquisition & Development:
+> Covers a number of items including the formal risk assessment process.
+. Risk assessment process identifies protection requirements & refines the preliminary assessment that was done in the initiation stage.
+. Functional requirements analysis which looks at security policy, architecture & functional security requirements.
+. Continuing, security assurance is an analysis of the requirements that are required & assurance that security will work correctly.
+. This analysis is based on legal & functional requirements & defines wht assurance methods are required.
+. A cost analysis is important to determine what security costs are associated with the development of the system
+. Security control development identifies planned or exisiting security controls, inlcuding policy, security training, incident response & configuration managenet
+. Security controls test & evaluation tests security controls during development & after the system is developed.
+
+3. Implementation
+> Inspection & sign-off process verifies that the deliverables meet the requirements.
+> Any integration to be done with other systems is performed t this stage as well as enabling security controls settings to be used.
+> Security certification controls are tested again to ensure that the operation functions as planned.
+> Security certification involves testing for vulnerabilities in the systems to be used.
+> Once that is comlete, a system accreditation is performed
+> A senior member of the org authorizes the implementation of the system & certifies that the risks have been identified 7 assurance made.
+
+4. Operations & Maintenance:
+> Consistz of performing configuration management % control & thrn montioring the system.
+> Change management is part of this process to inform parties that use the system $ any associated integrated system of implending changes.
+> Monitoring is key in determining that a system is performing correctly & verifyong control effectivenes.
+
+5. Dsiposition:
+> Its the final phase of the SDLC
+> Once the asset/system has reached the end of life, a few things need to be taken care of.
+> First, any information that was stored on the system needs to be evaluated for preservation purposes.
+> Is there a legal or compliance need to keep the data on the system?
+> Next, the media has to be destroyed or sanitized.
+> What do you do with your used hard drives?
+> There must be a procedure to sanitize/destry the hardware.
+> En examle wd ne to degauss a hard drive b4 it is sold/reused.
+> Last, proper preocedure must be followed to dipose of any hardware/software that made up the system.
+
+
+REVIEW OF OPERATIONS SECURITY.
+> The primary tenets of operations security invovlve the security and IT personnel assigned to safeguard 
+IT assets and these principles are in place to ensure the following;
+1. Data remains intact and can be recovered in a disaster
+2. No one person has too many previliges
+3. Changes made to a system or systems do not impact an organization's security posture
+
+> Operations Security Practices
+1. Separation of duties:	One person alone shd not be allowed to compromise security (use of dual operator or a 2-main control sys)
+2. Rotation of duties:		Single employee cant subvert security practices easily if employees' duties are rotated. Peer review can expose any issues
+3. Trusted recovery:		An org must make backups, secure them & test the regulary to be prepared for a disaster.
+4. Configuration & change 	Change control is a necessity in any org & is designed to prevent a change 4m impacting other functional areas inadvertently.
+control				changes are usually reviewed by peers & backout plans are formulated.
+
+NB: The above 1st practices are difficulty in smaller organizations but best in large ones.
+
+EVOLUTION OF THREATS
+> In 1980s, there were boot viruses which took weeks & sometimes months to proliferate bt nt sophisticated.
+> In November 1988, Morris worm ws launched which was the 1st malicious piece of code that installed itsellf 1 or more times & distributed itself via internet user knowledge
+> In the 1990s, there were email viruses, denial of service attacks & some limited hacking bt not the extent we see today.
+> In the early 1990s, viruses were mostly spread by sharing infected floppy disks bt then the interent went commenrcial & email viruses became prevalent as well as infected programs.
+> In the early 2000s, we started to see self-replicating tech viruses, worms & malware.
+> In the early 2000s, was the so-called Code Red worm which debuted in mid 2001 & targeted a vulneralibility in the indexing service of Microsoft's IIS server.
+> This worm caused multiple machines to be affected in a matter of days.
+> SQL slammer incident in 2003, it sent itself to random self-generated IP addresses & caused a DOS & 90% of vul machines were infected in 10 minutes.
+> Today's viruses, worms & malware have the capability to shut down antivirus software, morph to avoid detection & propagate in a number of ways and are known as BLENDED THREAT
+because they use different infecting & propagating ways
+
+
+CISCO SELF-DEFENDING NETWORK (CSDN)
+> The Self-Defending Network is an offering from Cisco that provides a defense-in-depth architecture by layering on several products that provide different security services.
+> It is designed to be adaptable to threats & recognoze attacks & thwart them
+NB: There are 3 x-tics to the CSDN ie Integrated, Collaborative and Adaptive
+
+1. Integrated: 
+- First, all the parts must work together & shd be designed that way from the start. 
+- It does no good if an IDS sends alerts somewhere bt none of the other systems are aware of it.
+
+2. Collaborative:
+- The systems need to cross more than one boundary within information technology grups.
+
+3. Adaptive:
+- The pdts must adapt to an ever changing security threat.
+
+NB: Other benefits of CSDN include the following;
+1. Comprehensive network dfense that delivers threat intelligence & multivector threat identification.
+2. Streamlined policy management
+3. Business protection
+
+THE ARCHITECTURE OF CSDN
+
+		Management of Policy & Operations
+				|
+				|
+				|
+			Threat Containment
+				|
+			Secure Communications
+				|
+				|
+				|
+			Secure Network Platform
+			
+> This foundation is the network of course. There must be a secure network platform from which to build on.
+> The building block provides encrytpion, ID & prevention & threat containment
+> At the top is a management paltform that provides control & oversight of all the pieces we just discussed.
+
+1. Secure network platform: 
+- This is the Cisco network consisting of the switches % routers that are in place & using the security features built into IOS.
+- Example wd be utilizing Dynamic ARP Protocol (DAI) on layer 2 devices & access control lists on a router.
+
+2. Secure communications:
+- This can be achieved suing Cisco's pdts wich implement Secure Sockets Layer (SSL) & IPsec VPNs for instance.
+- These can be either site-to-site or remote-access solutions.
+
+3. Threat containment:
+- Using solutions such as Cisco Security Agent whch implements host security is part of the way threats are contained via pdts such as firewalls, 
+by protecting ports that sdnt be exposed to third-part networks eg internet.
+
+4. Management of Policy & Operations:
+- Network Management systems allow you to deploy policy in a more automated fashion not to mention more accurately.
+- They allow you to respond to threats in a quicker fashion & gain a more global view of end-to-end security.
+- Another bendefit of operational control is improved wirkflow management.
+
+COMPONENTS OF CISCO SELF-DEFENDING NETWORK
+- Cisco ASA 5500 series adaptive security appaliance whch includes models: 5505, 5520, 5540, 5550 & 5580
+- Cisco 4200 series intrusion prevention applaince also known as an intursion detection system or sensor
+- Cisco Integrated Serive Routers (ISRs) & SDM software
+- Monitoring, Analysis & Response System (MARS) appliance whch receives alerts & does correlation accross several different security platforms
+- 6500 series switch, a core switchong platform
+- Cisco Security manager (CSM), a management platform for security devices
+- Cisco ACS Server used for authentication, authorization & account
+- Cisco Security Agent (CSA) host intrusion prevention system
+- Cisco NAC (Network Admission Control) appliance
+
+
+SECURING ADMINISTRATIVE ACCESS
+- This section ways to secure administrative access to the router and these invlove securing physical as well as virtual ports and setting passwords, levels of access and levels of privilege.
+
+METHODS OF ACCESSING THE ROUTER
+- There are many ways for an administrator to communicate with the router ie
+> Console port on the router (confs for the first time are done using this port coz ur physically close to it)
+> Virtual port over the network (later, you can gain access after conf over the network through VTY or (AUX attched to modem) ports using telnet or SSH)
+> HTTP or HTTPS over the network (for routers that support GUI but HTTPS is best)
+
+MODES OF INTERACTION WITH THE ROUTER
+1. User mode: (Generally doesnt allow changing confs bt is frequently used to perform "show" commands to query the router indcate by "#" prompt and will see only hostname
+This mode maybe used by the network operations center to isolate a problem duing troubleshooting
+
+2. If u want to make changes to the confs, you use "enable password" to enter "privilege mode". You can type "enable or en" to enter privilege mode and u will prompted to enter the password
+
+PASSWORD GUIDELINES
+1. Use a minimum of 10 characters
+2. USe a maximum of upper- and lowercase text plus special characters and numbers
+3. Password should not be a word that appears in a dictionary
+4. Develop and implement a password policy that dicates the length of passwords and how often they must be changed
+5. Spaces are considered special characters & are recognized inside of passwords bt nt at the leading edge of the text ie
+once the 1st character of text is added, spaces are legitimate characters & are recognized.
+
+NOTE:
+- One way to assure password length on the router is to cinfigure the "security-password min-length 10" commands while in global conf mode.
+
+PASSWORD TYPES
+- Passwords are usually configured during the intial conf of the router either manually or by using the "setup" commnad.
+- If you see the "setup" command, it will interactively prompt you to setup the "VTY, enable, enable secret"
+
+
+VTY password:--> prompted for VTY pswd when you use SSH or telnet to access the router.
+ENABLE pswd:---> Its a type-7 pswd and easily be deciphered by XOR deciphering methods
+ENABLE SECRET pswd:---> Its a type-5 "MD5 hash" of entered pswd
+
+CONFIGURING PSWDs
+
+1.Console configuration
+- Router(Config)# line con 0
+- Router(config-line)# password sup3rs3cr3t
+- Router(config-line)# end
+
+2. AUX port 
+- Router(config)# line aux 0
+- Router(config-line)# password mys3cr3t
+- Router(config-line)# end
+
+3. VTY (virtual TTY) 0 to 4
+- Router(config)# line vty 0 4
+- Router(config-line)# password vtyp4ssOrd
+- Router(Config-line)# login
+- Router(config-line)# end
+
+hashing the password
+- Router(config)# enable secret s3cr3tpas
+- Router(config)# end
+
+- Router# show running-config
+
+NB: applying the service password-encryption command to add the level 7 encryption to the configuration
+- Router# service password-encrytpion
+- show rnning-config
+
+CONFIGURING PRIVILEGE LEVELS
+> Router(config)# privilege exec level 2 traceroute
+> Router(cofig)# enable secret level 2 p4sswOrd
+
+NB: IF the router is configured as above, you wd login as level 2 using the following commnad;
+
+> Router enable 2
+> Password: p4sswOrd
+> Router# shpw privilege
+
+- Once you login, the router allows users who log in as level 2 to use the traceroute command.
+
+CLI VIEWS
+- Configuring views is similar to privilege confs but it involves the use of AAA to define the view to apply to a particular user or role
+
+> Router(config)# aaa new-model
+> Router# enable view
+Password:
+> Router#
+> Router# conf t
+> Router(config)# parser view NOC
+> Router(config-view(secret 0 nOcp4sswOrd	(this is a type 0 passwd)
+> Router(config-view)# commands exec include traceroute
+> Router(config-view)# commands exec include ping
+> Router# enable view NOC
+Password:
+> Router# ?
+
+- IF you want to protect the router from brute-force attacks, you can use the following commands
+. login block0for
+. login delay
+
+-- Shutdown logins when a DoS atack is detected
+. use (quiet-mode access-class)
+. login on-success in global configuration mode to log successful logins
+. USe the command login on-faliure in global conf mode to log unsuccessful logins
+. if you use (auto secure) to secure the router, then messages for failed attempts will be logged.
+
+CONFIGRNG A BANNER
+> Router(config)# config t
+> router(config)# banner motd $
+$
+> Router(config)# end
+> Router(config)# line con 0
+> Router(config-line)# password myroutersecret
+> Router(config-line)# login
+> Router(config)# service password-encryption
+
+CISCO ISR ROUTERS (integrated services routers)
+- ISRs integrate features like voice, security & Qos and include 800, 1800, 2800 & 3800 series
+
+Security features in ISRs
+> Stateful firewall: firewall feature set can be used for stateful inspection of packets
+> VPN: Supports vpns
+> VPN Virtual Routing & Forwarding(VRF)-aware firewall: maintain separate routing tables for each VPN
+> IPS: can detect & prevent attacks before are successful.
+
+
+CISCO SECURITY DEVICE MANAGER (SDM)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
